@@ -1,7 +1,9 @@
-from flask import Flask
 from .general_routes import general_blueprint
 from .attendance_routes import attendance_blueprint
 
-def register_routes(app: Flask):
-    app.register_blueprint(general_blueprint)
-    app.register_blueprint(attendance_blueprint, url_prefix='/api')
+"""
+This method is used to register routes as blueprint
+"""
+def register_routes(api):
+    api.register_blueprint(general_blueprint)
+    api.register_blueprint(attendance_blueprint)
