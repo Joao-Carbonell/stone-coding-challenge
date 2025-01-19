@@ -1,5 +1,8 @@
 from datetime import datetime
 
+from marshmallow import ValidationError
+
+
 def parse_date(date_str):
     """
     Parses a date string into a `datetime` object using predefined formats.
@@ -17,6 +20,11 @@ def parse_date(date_str):
     :rtype: datetime.datetime
     :raises ValueError: When the provided date string does not match any of the predefined formats.
     """
+    #Validate the data type
+    if not isinstance(date_str, str):
+        raise ValidationError("DATE_INVALID_FORMAT")
+
+
     formats=[
         '%d/%m/%Y %H:%M:%S',  # 29/06/2021 10:15:27
         '%d/%m/%Y %H:%M',  # 29/06/2021 10:15
@@ -26,10 +34,12 @@ def parse_date(date_str):
         '%d/%m/%y',  # 27/06/21
         '%d /%m /%Y %H:%M:%S'  # 28 /06 /2021 10:57:27
     ]
+    # Return the date formated
+    # If the formated date is invalid, return an exception
     try:
         return next(datetime.strptime(date_str.strip(), fmt) for fmt in formats if is_valid_format(date_str, fmt))
     except StopIteration:
-        raise ValueError(f"Formato de data inválido: {date_str}")
+        raise ValueError("DATE_INVALID_FORMAT")
 
 
 def is_valid_format(date_str, fmt):
