@@ -32,3 +32,5 @@ class AttendanceSchema(Schema):
     pole = fields.Str(required=True)
     deadline = fields.Function(serialize=lambda obj: obj.deadline, deserialize=parse_date, required=True)
     attendance_date = fields.Function(serialize=lambda obj: obj.attendance_date, deserialize=parse_date, required=True)
+
+    #TODO: add personalized validations on schema

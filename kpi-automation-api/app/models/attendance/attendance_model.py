@@ -30,7 +30,10 @@ class Attendance(db.Model):
     """
     __tablename__ = 'attendances'
 
-    _id = db.Column(db.Integer, primary_key=True)
+    #@TODO: Replace id by uuid
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     _id_attendance = db.Column('id_attendance', db.Integer)
     _id_client = db.Column('id_client', db.Integer, nullable=False)
     _angel = db.Column('angel', db.String(255), nullable=False)
@@ -113,4 +116,18 @@ class Attendance(db.Model):
             raise ValueError("ATTENDANCE_DATETIME_INVALID")
 
     def __repr__(self):
-        return f"<Attendance {self.id_attendance} - {self.angel} - {self.pole}>"
+        return (f"<Attendance { self.id } - {self.id_attendance} - {self.id_client} - {self.angel} - {self.pole} - "
+                f"{self._attendance_date} - {self.deadline}>")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "id_attendance": self.id_attendance,
+            "id_client": self.id_client,
+            "angel" : self.angel,
+            "pole": self.pole,
+            "attendance_date": self.attendance_date,
+            "deadline": self.deadline,
+        }
