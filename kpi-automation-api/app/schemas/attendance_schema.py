@@ -1,8 +1,16 @@
-from marshmallow import Schema, fields, ValidationError, pre_load
+from marshmallow import fields
+from marshmallow_sqlalchemy import SQLAlchemySchema, auto_field
+
+from app.config.config import db
+from app.models.attendance.attendance_model import Attendance
 from app.utils.date_utils import parse_date
 
 
-class AttendanceSchema(Schema):
+class AttendanceSchema(SQLAlchemySchema):
+    class Meta:
+        model = Attendance
+        load_instance = True
+        sqla_session = db.session
     """
     Schema definition for attendance data.
 
@@ -26,9 +34,10 @@ class AttendanceSchema(Schema):
         and deserialization logic.
     :type attendance_date: Function
     """
-    id_attendance = fields.Int(required=True)
-    id_client = fields.Int(required=True)
-    angel = fields.Str(required=True)
-    pole = fields.Str(required=True)
+    id = auto_field()
+    id_attendance = auto_field()
+    id_client = auto_field()
+    angel = auto_field()
+    pole = auto_field()
     deadline = fields.Function(serialize=lambda obj: obj.deadline, deserialize=parse_date, required=True)
     attendance_date = fields.Function(serialize=lambda obj: obj.attendance_date, deserialize=parse_date, required=True)
