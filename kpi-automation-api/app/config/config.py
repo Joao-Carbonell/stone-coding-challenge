@@ -1,7 +1,13 @@
 import os
 from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy.session import Session
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 db = SQLAlchemy()
+
+# Create a SQLAlchemy session
+session = Session(db)
 
 #Configuration class for db
 class Config:
@@ -20,4 +26,10 @@ class Config:
     :type SQLALCHEMY_DATABASE_URI: str
     """
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DB_URL')
+    SQLALCHEMY_DATABASE_URI = "postgresql://postgres:admin@localhost:5432/kpi-api-database"
+
+
+    engine = create_engine(SQLALCHEMY_DATABASE_URI)
+
+
+    Session = sessionmaker(bind=engine)

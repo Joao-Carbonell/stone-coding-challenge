@@ -30,13 +30,16 @@ class Attendance(db.Model):
     """
     __tablename__ = 'attendances'
 
-    _id = db.Column(db.Integer, primary_key=True)
-    _id_attendance = db.Column('id_attendance', db.Integer)
-    _id_client = db.Column('id_client', db.Integer, nullable=False)
-    _angel = db.Column('angel', db.String(255), nullable=False)
-    _pole = db.Column('pole', db.String(255), nullable=False)
-    _deadline = db.Column('deadline', db.DateTime, nullable=False)
-    _attendance_date = db.Column('attendance_date', db.DateTime, nullable=False)
+    #@TODO: Replace id by uuid
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+    id_attendance = db.Column('id_attendance', db.Integer)
+    id_client = db.Column('id_client', db.Integer, nullable=False)
+    angel = db.Column('angel', db.String(255), nullable=False)
+    pole = db.Column('pole', db.String(255), nullable=False)
+    deadline = db.Column('deadline', db.DateTime, nullable=False)
+    attendance_date = db.Column('attendance_date', db.DateTime, nullable=False)
 
     def __init__(self, id_attendance, id_client, angel, pole, deadline, attendance_date):
         self.id_attendance = id_attendance
@@ -46,71 +49,19 @@ class Attendance(db.Model):
         self.deadline = deadline
         self.attendance_date = attendance_date
 
-    @property
-    def id_attendance(self):
-        return self._id_attendance
-
-    @id_attendance.setter
-    def id_attendance(self, value):
-        if isinstance(value, int) and value > 0:
-            self._id_attendance = value
-        else:
-            raise ValueError("INVALID_ATTENDANCE_ID") #
-
-    @property
-    def id_client(self):
-        return self._id_client
-
-    @id_client.setter
-    def id_client(self, value):
-        if isinstance(value, int) and value > 0:
-            self._id_client = value
-        else:
-            raise ValueError("INVALID_CLIENT_ID")
-
-    @property
-    def angel(self):
-        return self._angel
-
-    @angel.setter
-    def angel(self, value):
-        if isinstance(value, str) and len(value) > 0:
-            self._angel = value
-        else:
-            raise ValueError("EMPTY_STRING_FOR_ANGEL_NAME")
-
-    @property
-    def pole(self):
-        return self._pole
-
-    @pole.setter
-    def pole(self, value):
-        if isinstance(value, str) and len(value) > 0:
-            self._pole = value
-        else:
-            raise ValueError("EMPTY_STRING_FOR_POLE_NAME")
-
-    @property
-    def deadline(self):
-        return self._deadline
-
-    @deadline.setter
-    def deadline(self, value):
-        if isinstance(value, datetime):
-            self._deadline = value
-        else:
-            raise ValueError("DEADLINE_DATETIME_INVALID")
-
-    @property
-    def attendance_date(self):
-        return self._attendance_date
-
-    @attendance_date.setter
-    def attendance_date(self, value):
-        if isinstance(value, datetime):
-            self._attendance_date = value
-        else:
-            raise ValueError("ATTENDANCE_DATETIME_INVALID")
-
     def __repr__(self):
-        return f"<Attendance {self.id_attendance} - {self.angel} - {self.pole}>"
+        return (f"<Attendance { self.id } - {self.id_attendance} - {self.id_client} - {self.angel} - {self.pole} - "
+                f"{self.attendance_date} - {self.deadline}>")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "id_attendance": self.id_attendance,
+            "id_client": self.id_client,
+            "angel" : self.angel,
+            "pole": self.pole,
+            "attendance_date": self.attendance_date,
+            "deadline": self.deadline,
+        }
