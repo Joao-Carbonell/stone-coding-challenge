@@ -15,7 +15,21 @@ class AttendanceController:
     """
     @staticmethod
     def create_attendance(data):
-            return AttendanceService.create_attendance(data)
+        """
+        Creates an attendance record for the given input data by utilizing
+        the AttendanceService.
+
+        This method is responsible for interacting with the AttendanceService
+        to create a new attendance record. It accepts the necessary input data
+        and delegates the creation logic to the service.
+
+        :param data: The input data required to create an attendance record.
+        :type data: Any
+        :return: The result of the attendance creation operation
+                 as processed by the AttendanceService.
+        :rtype: Any
+        """
+        return AttendanceService.create_attendance(data)
 
     @staticmethod
     def update_attendance(data, id):
@@ -32,13 +46,7 @@ class AttendanceController:
         :return: An HTTP response object. On success, returns the updated attendance data.
             On failure, returns an error message with a corresponding HTTP status code.
         """
-        try:
-            schema = AttendanceSchema()
-            # Validating the data sent from the client
-            validated_data = schema.load(data)
-            # Sending data to the service
-            return AttendanceService.update_attendance(validated_data, id)
-        except ValidationError as ve:
-            return make_response(jsonify({'message': 'INVALID_DATA', 'errors': ve.messages}), 400)
-        except Exception as e:
-            return make_response(jsonify({'message': 'ATTENDANCE_NOT_FOUND', 'error': str(e)}), 500)
+
+        return AttendanceService.update_attendance(data, id)
+
+

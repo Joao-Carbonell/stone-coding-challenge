@@ -5,6 +5,18 @@ from app.services.attendance_service import AttendanceService
 
 
 class TestAttendanceService(unittest.TestCase):
+    """
+    Test suite for validating the functionalities of AttendanceService in creating and
+    managing "attendance" records.
+
+    The class is structured to test various scenarios for the `create_attendance` method,
+    including valid and invalid input, ensuring proper validation, error handling, and
+    interaction with the mocked database session.
+
+    :ivar valid_data: A dictionary containing valid attendance data, used as the base
+        reference for creating test cases with valid and invalid inputs.
+    :type valid_data: dict
+    """
     valid_data = {
         "id_attendance": 4,
         "id_client": 3,
@@ -71,14 +83,15 @@ class TestAttendanceService(unittest.TestCase):
 
         :returns: None
         """
+
         response = AttendanceService.create_attendance(self.valid_data)
 
         # Check the response
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(response.json, {'message': 'ATTENDANCE_CREATED'})
+        self.assertIn('ATTENDANCE_CREATED', response.json['message'])
 
         # Check that object was persisted in db
-        self.db_session_mock.add.assert_called_once()
+        self.db_session_mock.execute.assert_called_once()
         self.db_session_mock.commit.assert_called_once()
 
 
@@ -108,7 +121,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Not a valid integer.', response.json['errors']['id_attendance'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_null_id_attendance(self):
@@ -140,7 +153,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Missing data for required field.', response.json['errors']['id_attendance'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_negative_id_attendance(self):
@@ -165,12 +178,15 @@ class TestAttendanceService(unittest.TestCase):
         response = AttendanceService.create_attendance(invalid_data)
 
         # Check the answer
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(response.json['message'], 'ATTENDANCE_NOT_CREATED')
-        self.assertEqual(response.json['error'], 'INVALID_ATTENDANCE_ID')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json['message'], 'INVALID_DATA')
+        # self.assertEqual(response.json['error'], 'INVALID_ATTENDANCE_ID')
+
+        self.assertIn('id_attendance', response.json['errors'])
+        self.assertIn('INVALID_ATTENDANCE_ID', response.json['errors']['id_attendance'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
 
@@ -201,7 +217,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Not a valid integer.', response.json['errors']['id_client'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_null_id_client(self):
@@ -231,7 +247,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Missing data for required field.', response.json['errors']['id_client'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_negative_id_client(self):
@@ -255,12 +271,15 @@ class TestAttendanceService(unittest.TestCase):
         response = AttendanceService.create_attendance(invalid_data)
 
         # Check the answer
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(response.json['message'], 'ATTENDANCE_NOT_CREATED')
-        self.assertEqual(response.json['error'], 'INVALID_CLIENT_ID')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json['message'], 'INVALID_DATA')
+        # self.assertEqual(response.json['error'], 'INVALID_ATTENDANCE_ID')
+
+        self.assertIn('id_client', response.json['errors'])
+        self.assertIn('INVALID_CLIENT_ID', response.json['errors']['id_client'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_empty_angel(self):
@@ -280,12 +299,15 @@ class TestAttendanceService(unittest.TestCase):
         response = AttendanceService.create_attendance(invalid_data)
 
         # Check the answer
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(response.json['message'], 'ATTENDANCE_NOT_CREATED')
-        self.assertEqual(response.json['error'], 'EMPTY_STRING_FOR_ANGEL_NAME')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json['message'], 'INVALID_DATA')
+        # self.assertEqual(response.json['error'], 'INVALID_ATTENDANCE_ID')
+
+        self.assertIn('angel', response.json['errors'])
+        self.assertIn('INVALID_ANGEL_NAME', response.json['errors']['angel'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_null_angel(self):
@@ -313,7 +335,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Missing data for required field.', response.json['errors']['angel'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_not_string_angel(self):
@@ -342,7 +364,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Not a valid string.', response.json['errors']['angel'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_empty_pole(self):
@@ -360,12 +382,15 @@ class TestAttendanceService(unittest.TestCase):
         response = AttendanceService.create_attendance(invalid_data)
 
         # Check the answer
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(response.json['message'], 'ATTENDANCE_NOT_CREATED')
-        self.assertEqual(response.json['error'], 'EMPTY_STRING_FOR_POLE_NAME')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json['message'], 'INVALID_DATA')
+        # self.assertEqual(response.json['error'], 'INVALID_ATTENDANCE_ID')
+
+        self.assertIn('pole', response.json['errors'])
+        self.assertIn('INVALID_POLE_NAME', response.json['errors']['pole'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_null_pole(self):
@@ -399,7 +424,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Missing data for required field.', response.json['errors']['pole'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_not_string_pole(self):
@@ -448,7 +473,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Not a valid string.', response.json['errors']['pole'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_invalid_attendance_date_type(self):
@@ -487,7 +512,7 @@ class TestAttendanceService(unittest.TestCase):
 
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_invalid_formated_attendance_date(self):
@@ -544,7 +569,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertEqual(response.json['error'], 'DATE_INVALID_FORMAT')
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_null_attendance_date(self):
@@ -572,7 +597,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Missing data for required field.', response.json['errors']['attendance_date'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_invalid_deadline_type(self):
@@ -606,7 +631,7 @@ class TestAttendanceService(unittest.TestCase):
 
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_invalid_formated_deadline_date(self):
@@ -665,7 +690,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertEqual(response.json['error'], 'DATE_INVALID_FORMAT')
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_null_deadline(self):
@@ -706,7 +731,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn('Missing data for required field.', response.json['errors']['deadline'])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
     def test_create_attendance_unknown_field(self):
@@ -735,7 +760,7 @@ class TestAttendanceService(unittest.TestCase):
         self.assertIn("Unknown field.", response.json['errors']["unknown_field"])
 
         # Check if no operation was executed in the db
-        self.db_session_mock.add.assert_not_called()
+        self.db_session_mock.execute.assert_not_called()
         self.db_session_mock.commit.assert_not_called()
 
 if __name__ == '__main__':
