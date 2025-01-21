@@ -16,7 +16,7 @@ from app.utils.date_utils import parse_date
         update_attendance: Updates an existing attendance record by ID.
     """
 class AttendanceService:
-
+    # TODO: Remove database queries from service and move to repository
     @staticmethod
     def create_attendance(data):
         attendance_creation_schema = AttendanceCreationSchema()
@@ -54,6 +54,7 @@ class AttendanceService:
             db.session.rollback()
             return make_response(jsonify({'message': 'ATTENDANCE_NOT_CREATED', 'error': str(e)}), 500)
 
+    # TODO: Remove database queries from service and move to repository
     @staticmethod
     def update_attendance(data, id):
 
@@ -93,6 +94,7 @@ class AttendanceService:
             db.session.rollback()
             return make_response(jsonify({'message': 'ATTENDANCE_NOT_UPDATED', 'error': str(e)}), 500)
 
+    # TODO: Remove database queries from service and move to repository
     @staticmethod
     def retrieve_attendance(id):
 
@@ -116,11 +118,11 @@ class AttendanceService:
             db.session.rollback()
             return make_response(jsonify({'message': 'ATTENDANCE_NOT_FOUND', 'error': str(e)}), 500)
 
+    # TODO: Remove database queries from service and move to repository
     @staticmethod
     def get_all_attendances(args):
 
         query = Attendance.query
-        # Obtendo parâmetros da requisição
         id_client = args.get('id_client')
         id_attendance = args.get('id_attendance')
         deadline = ""
