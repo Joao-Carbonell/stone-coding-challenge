@@ -34,7 +34,7 @@ class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    id_attendance = db.Column('id_attendance', db.Integer)
+    id_attendance = db.Column('id_attendance', db.Integer, nullable=False)
     id_client = db.Column('id_client', db.Integer, nullable=False)
     angel = db.Column('angel', db.String(255), nullable=False)
     pole = db.Column('pole', db.String(255), nullable=False)

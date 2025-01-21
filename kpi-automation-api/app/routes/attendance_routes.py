@@ -1,12 +1,15 @@
 from flask import request, jsonify, make_response
 from flask.views import MethodView
 from flask_smorest import Blueprint
+
+from app.controllers.analytics_controller import AnalyticsController
 from app.controllers.attendance_controller import AttendanceController
 from app.schemas.attendance_schema import AttendanceSchema
 
 attendance_blueprint = Blueprint('api', 'api', url_prefix="/api",
-                                 description="The general blueprint" )
+                                 description="API endpoints" )
 
+# @TODO: Add Schema for arguments and responses for all requests
 @attendance_blueprint.route("/")
 class AttendanceCollection(MethodView):
     """
@@ -92,4 +95,55 @@ def get_attendances():
     :rtype: flask.Response
     """
     return AttendanceController.get_all_attendances(request)
+
+@attendance_blueprint.route('/analytics/productivity_by_period/', methods=['GET'])
+def get_productivity_by_period():
+    """
+    Handles the HTTP GET request for retrieving productivity analytics for a specified
+    time period. This function serves as a route handler, delegating the actual
+    processing logic to the `get_productivity_by_period` method of the
+    `AnalyticsController` class.
+
+    :raises HTTPException: If an error occurs during the processing of the request.
+    :return: The response from `AnalyticsController.get_productivity_by_period`, representing
+             the productivity analytics for the given period.
+    :rtype: Response
+    """
+    return AnalyticsController.get_productivity_by_period()
+
+@attendance_blueprint.route('/analytics/productivity_by_period_with_angel/', methods=['GET'])
+def get_productivity_by_period_with_angel():
+    """
+    Handles the HTTP GET request to fetch productivity data for a specific period
+    along with associated angel analytics. This endpoint allows the client to
+    retrieve detailed analysis of productivity metrics intertwined with angel
+    data for the specified time frame.
+
+    :returns: Response object containing the productivity data combined with angel
+              analytics. The response format depends on the implementation in
+              ``AnalyticsController.get_productivity_by_period_with_angel()``.
+    :rtype: flask.Response
+    """
+    return AnalyticsController.get_productivity_by_period_with_angel()
+
+@attendance_blueprint.route('/analytics/productivity_by_logistics_pole_and_period/', methods=['GET'])
+def get_productivity_by_logistics_pole_and_period():
+    """
+    Retrieve productivity data by logistics pole and specified time period.
+
+    This endpoint is part of the analytics blueprint and handles requests for
+    analyzing productivity data specific to logistics poles over a given
+    timeframe. The endpoint routes requests to the corresponding controller
+    method for processing and response generation.
+
+    :raises HTTPException: If an HTTP-specific exception occurs during processing,
+        the error will be raised with proper status codes and details.
+    :raises Exception: If an unexpected error occurs during execution, a generic
+        exception is raised.
+
+    :return: The response object containing productivity information for the
+        specified logistics pole and time period.
+    :rtype: flask.Response
+    """
+    return AnalyticsController.get_productivity_by_logistics_pole_and_period()
 

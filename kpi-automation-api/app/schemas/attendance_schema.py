@@ -5,7 +5,6 @@ from app.config.config import db
 from app.models.attendance.attendance_model import Attendance
 from app.utils.date_utils import parse_date
 
-
 class AttendanceSchema(SQLAlchemySchema):
     class Meta:
         model = Attendance

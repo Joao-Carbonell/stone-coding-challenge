@@ -8,7 +8,6 @@ from marshmallow import ValidationError
 
 from app.schemas.attendance_schema import AttendanceSchema
 from app.utils.date_utils import parse_date
-
 """
     Service for creating and updating attendance records.
 
@@ -105,7 +104,6 @@ class AttendanceService:
             # Uses the schema validator to validate the data
             # Using db.session.query due the Attendance.query.get are deprecated
             attendance = db.session.scalars(select(Attendance).where(Attendance.id == id)).one()
-
 
             return make_response(jsonify({'message': 'ATTENDANCE_FOUND', 'attendance': attendance_schema.dump(attendance)}), 201)
         except ValidationError as ve:

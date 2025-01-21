@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_smorest import Api
 from app.config.config import Config
 from app.routes import register_routes
