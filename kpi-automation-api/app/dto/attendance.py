@@ -2,11 +2,15 @@ import datetime
 
 from marshmallow import Schema, fields, ValidationError, validates, post_load
 
+from app.config.config import db
 from app.models.attendance.attendance_model import Attendance
 from app.utils.date_utils import parse_date
 
 
 class AttendanceCreationSchema(Schema):
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now())
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now())
     id_attendance = fields.Int(required=True)
     id_client = fields.Int(required=True)
     angel = fields.Str(required=True)

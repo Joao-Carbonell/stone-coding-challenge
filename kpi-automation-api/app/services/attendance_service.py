@@ -6,6 +6,7 @@ from app.models.attendance.attendance_model import Attendance
 from app.config.config import db
 from marshmallow import ValidationError
 
+from app.repositories.attendance_repository import AttendanceRepository
 from app.schemas.attendance_schema import AttendanceSchema
 from app.utils.date_utils import parse_date
 """
@@ -24,25 +25,8 @@ class AttendanceService:
             # Uses the schema validator to validate the data
             # @TODO: Remove validations from services
             validated_data = attendance_creation_schema.load(data)
-            # Create a new Attendance object
-            new_attendance = Attendance(id_attendance = validated_data.id_attendance,
-                                           id_client = validated_data.id_client,
-                                           angel = validated_data.angel,
-                                           pole = validated_data.pole,
-                                           deadline = validated_data.deadline,
-                                           attendance_date = validated_data.attendance_date)
-
-            # Execute a transaction to db
-            db.session.execute(
-                insert(Attendance).values(id_attendance = new_attendance.id_attendance,
-                                           id_client = new_attendance.id_client,
-                                           angel = new_attendance.angel,
-                                           pole = new_attendance.pole,
-                                           deadline = new_attendance.deadline,
-                                           attendance_date = new_attendance.attendance_date)
-            )
-            # Commit the db changes
-            db.session.commit()
+            #  Using the attendance repository to create an attendance register on db
+            new_attendance = AttendanceRepository.create_attendance(validated_data)
 
             return make_response(jsonify({'message': 'ATTENDANCE_CREATED', 'attendance': new_attendance.to_dict()}), 201)
         except ValidationError as ve:
@@ -60,10 +44,8 @@ class AttendanceService:
 
         attendance_creation_schema = AttendanceCreationSchema()
         try:
-            if not id or not isinstance(id, int):
-                raise ValueError("Invalid attendance ID")
-            # Using db.session.query due the Attendance.query.get are deprecated
-            attendance_record = db.session.query(Attendance).filter(Attendance.id == id).one()
+            # Using the attendance repository to find an attendance register on db
+            attendance_record = AttendanceRepository.get_attendance_by_id(id)
 
             # @TODO: Remove validations from services
             # Uses the schema validator to validate the data
@@ -100,14 +82,10 @@ class AttendanceService:
 
         attendance_schema = AttendanceSchema()
         try:
-            if not id or not isinstance(id, int):
-                raise ValueError("Invalid attendance ID")
-
             # Uses the schema validator to validate the data
-            # Using db.session.query due the Attendance.query.get are deprecated
-            attendance = db.session.scalars(select(Attendance).where(Attendance.id == id)).one()
+            attendance = attendance_schema.dump(AttendanceRepository.get_attendance_by_id(id))
 
-            return make_response(jsonify({'message': 'ATTENDANCE_FOUND', 'attendance': attendance_schema.dump(attendance)}), 201)
+            return make_response(jsonify({'message': 'ATTENDANCE_FOUND', 'attendance': attendance}), 201)
         except ValidationError as ve:
             db.session.rollback()
             return make_response(jsonify({'message': 'INVALID_DATA', 'errors': ve.messages}), 400)
@@ -122,7 +100,8 @@ class AttendanceService:
     @staticmethod
     def get_all_attendances(args):
 
-        query = Attendance.query
+        query = AttendanceRepository.get_attendances()
+
         id_client = args.get('id_client')
         id_attendance = args.get('id_attendance')
         deadline = ""
