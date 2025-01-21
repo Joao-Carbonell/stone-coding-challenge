@@ -120,15 +120,15 @@ class AttendanceService:
         filter_map = {
             'id_client': lambda q, v: q.filter(Attendance.id_client.ilike(f"%{v}%")) if v else q,
             'attendance_date': lambda q, v: q.filter(
-                Attendance.attendance_date.between(attendance_date, deadline)) if attendance_date and deadline else (
-                q.filter(Attendance.attendance_date >= attendance_date) if attendance_date else q.filter(
-                    Attendance.attendance_date <= deadline) if deadline else q
-            ),
+                Attendance.attendance_date == v
+            ) if v else q,
             'deadline': lambda q, v: q.filter(
-                Attendance.attendance_date.between(deadline, attendance_date)) if deadline and attendance_date else (
-                q.filter(Attendance.deadline >= deadline) if deadline else q.filter(
-                    Attendance.deadline <= attendance_date) if deadline else q
-            ),
+                Attendance.deadline == v
+            ) if v else q,
+            'attendance_date_and_deadline': lambda q, v: q.filter(
+                Attendance.attendance_date == v[0],
+                Attendance.deadline == v[1]
+            ) if v and v[0] and v[1] else q,
             'pole': lambda q, v: q.filter(Attendance.pole == v) if v else q,
             'angel': lambda q, v: q.filter(Attendance.angel == v) if v else q,
             'id_attendance': lambda q, v: q.filter(Attendance.id_attendance == v) if v else q
