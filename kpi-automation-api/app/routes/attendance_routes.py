@@ -123,6 +123,11 @@ def get_productivity_by_period_with_angel():
     """
     return AnalyticsController.get_productivity_by_period_with_angel()
 
+@attendance_blueprint.route('/analytics/productivity_by_angel/', methods=['GET'])
+def get_productivity_by_angel():
+
+    return AnalyticsController.get_productivity_by_angel()
+
 @attendance_blueprint.route('/analytics/productivity_by_logistics_pole_and_period/', methods=['GET'])
 def get_productivity_by_logistics_pole_and_period():
     """

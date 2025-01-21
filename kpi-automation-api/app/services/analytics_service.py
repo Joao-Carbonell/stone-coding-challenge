@@ -45,8 +45,8 @@ class AnalyticsService:
 
             result = list(map(lambda attendance: {
                 'angel': attendance.angel,
-                'total_attendances': attendance.total_attendance,
-                'productivity_mean': attendance.total_attendance / business_days if business_days > 0 else 0
+                'total_attendances': attendance.total_attendances,
+                'productivity_mean': attendance.total_attendances / business_days if business_days > 0 else 0
             }, attendances))
 
             business_days = {'business_days': business_days}
@@ -58,6 +58,39 @@ class AnalyticsService:
             return jsonify({'message':'Invalid date format','error': str(e)}), 400
         except ValidationError as e:
             return jsonify({'message':'Need both start and end date.','error': str(e)}), 400
+
+    @staticmethod
+    def get_productivity_by_angel(args):
+        try:
+            if not args.get('angel'):
+                raise ValidationError("NO_ANGEL_NAME_SEND")
+    
+            angel = args.get('angel')
+
+            productivity_data = AttendanceRepository.get_productivity_by_angel(angel)
+
+            if not productivity_data:
+                return make_response(jsonify({'message': 'NO_DATA_FOUND'}), 404)
+
+            business_days = business_count_days(productivity_data[0].start_date, productivity_data[0].end_date)
+
+            result = list(map(lambda attendance: {
+                'angel': attendance.angel,
+                'total_attendances': attendance.total_attendances,
+                'on_time_attendances': attendance.on_time_attendances,
+                'delayed_attendances': attendance.total_attendances - attendance.on_time_attendances,
+                'business_days': business_days,
+                'productivity_mean': (attendance.total_attendances / business_days) if business_days > 0 else 0,
+                'on_time_percentage': (attendance.on_time_attendances / attendance.total_attendances)
+                                      * 100 if attendance.on_time_attendances  > 0 else 0
+            }, productivity_data))
+
+            return make_response(jsonify({'message':'PRODUCTIVITY_RETRIEVED', 'productivity_by_period': result}), 201)
+        except ValueError as e:
+            return jsonify({'message':'Invalid date format','error': str(e)}), 400
+        except ValidationError as e:
+            return jsonify({'message':'Missing data.','error': str(e)}), 400
+
 
     @staticmethod
     def get_productivity_by_period_with_angel(args):
@@ -93,16 +126,19 @@ class AnalyticsService:
 
             angel = args.get('angel')
 
-            attendances = AttendanceRepository.get_productivity_by_period_with_angel(start_date, end_date, angel)
+            productivity_data = AttendanceRepository.get_productivity_by_period_with_angel(start_date, end_date, angel)
+
+            if not productivity_data:
+                return make_response(jsonify({'message': 'NO_DATA_FOUND'}), 404)
 
             business_days = business_count_days(start_date, end_date)
 
             result = list(map(lambda attendance: {
                 'angel': attendance.angel,
-                'total_attendances': attendance.total_attendance,
+                'total_attendances': attendance.total_attendances,
                 'business_days': business_days,
-                'productivity_mean': attendance.total_attendance / business_days if business_days > 0 else 0
-            }, attendances))
+                'productivity_mean': attendance.total_attendances / business_days if business_days > 0 else 0
+            }, productivity_data))
 
             return make_response(jsonify({'message':'PRODUCTIVITY_RETRIEVED', 'productivity_by_period': result}), 201)
         except ValueError as e:
@@ -147,7 +183,10 @@ class AnalyticsService:
 
             pole = args.get('pole')
 
-            attendances = AttendanceRepository.get_productivity_by_logistics_pole_and_period(pole, start_date, end_date)
+            productivity_data = AttendanceRepository.get_productivity_by_logistics_pole_and_period(pole, start_date, end_date)
+
+            if not productivity_data:
+                return make_response(jsonify({'message': 'NO_DATA_FOUND'}), 404)
 
             result = list(map(lambda attendance: {
                 'pole': attendance.pole,
@@ -156,7 +195,7 @@ class AnalyticsService:
                 'delayed_attendances': attendance.total_attendances - attendance.on_time_attendances,
                 'on_time_percentage': (attendance.on_time_attendances / attendance.total_attendances)
                                       * 100 if attendance.on_time_attendances  > 0 else 0
-            }, attendances))
+            }, productivity_data))
 
             return make_response(jsonify({'message': 'PRODUCTIVITY_RETRIEVED', 'productivity_by_period': result}), 201)
         except ValueError as e:

@@ -101,12 +101,31 @@ class AttendanceRepository:
         """
         return (db.session.query(
             Attendance.angel,
-            func.count(Attendance.id).label('total_attendance')
+            func.count(Attendance.id).label('total_attendances'),
+            func.min(Attendance.attendance_date).label('start_date'),
+            func.max(Attendance.attendance_date).label('end_date')
         ).filter(
             Attendance.attendance_date >= start_date,
             Attendance.attendance_date <= end_date
         ).group_by(Attendance.angel).all())
 
+    @staticmethod
+    def get_productivity_by_angel(angel):
+
+        query = db.session.query(
+            Attendance.angel,
+            func.count(Attendance.id).label('total_attendances'),
+            func.min(Attendance.attendance_date).label('start_date'),
+            func.max(Attendance.attendance_date).label('end_date'),
+            func.sum(
+                case(
+                    (Attendance.attendance_date <= Attendance.deadline, 1),
+                    else_=0
+                )
+            ).label('on_time_attendances')
+        ).filter(Attendance.angel == angel)
+
+        return query.group_by(Attendance.angel).all()
     # Returning a list of registers of Attendance on db by a period of time by a angel
     @staticmethod
     def get_productivity_by_period_with_angel(start_date, end_date, angel):
@@ -128,7 +147,7 @@ class AttendanceRepository:
         """
         query = db.session.query(
             Attendance.angel,
-            func.count(Attendance.id).label('total_attendance')
+            func.count(Attendance.id).label('total_attendances')
         ).filter(
             Attendance.attendance_date >= start_date,
             Attendance.attendance_date <= end_date
@@ -169,3 +188,4 @@ class AttendanceRepository:
         )
 
         return query.group_by(Attendance.pole).all()
+

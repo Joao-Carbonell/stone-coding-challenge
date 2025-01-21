@@ -41,6 +41,11 @@ class AnalyticsController:
         return AnalyticsService.get_productivity_by_period_with_angel(args)
 
     @staticmethod
+    def get_productivity_by_angel():
+        args = request.args.to_dict()
+        return AnalyticsService.get_productivity_by_angel(args)
+
+    @staticmethod
     def get_productivity_by_logistics_pole_and_period():
         """
         Returns productivity analytics by logistics pole and period based on provided
