@@ -4,7 +4,7 @@ from flask import Flask
 from app.controllers.attendance_controller import AttendanceController
 
 
-class TestAttendanceController(unittest.TestCase):
+class TestAttendanceCreation(unittest.TestCase):
     """
     Test suite for validating the functionalities of AttendanceController in creating and
     managing "attendance" records.

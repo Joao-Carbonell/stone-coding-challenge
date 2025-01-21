@@ -4,7 +4,7 @@ from flask import Flask
 from app.services.attendance_service import AttendanceService
 
 
-class TestAttendanceService(unittest.TestCase):
+class TestAttendanceUpdate(unittest.TestCase):
     """
     Unit tests for validating the `update_attendance` method in the AttendanceService class.
 

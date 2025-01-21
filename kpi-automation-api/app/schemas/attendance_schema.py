@@ -5,7 +5,6 @@ from app.config.config import db
 from app.models.attendance.attendance_model import Attendance
 from app.utils.date_utils import parse_date
 
-
 class AttendanceSchema(SQLAlchemySchema):
     class Meta:
         model = Attendance
@@ -34,9 +33,10 @@ class AttendanceSchema(SQLAlchemySchema):
         and deserialization logic.
     :type attendance_date: Function
     """
+    id = auto_field()
     id_attendance = auto_field()
     id_client = auto_field()
     angel = auto_field()
     pole = auto_field()
-    deadline = fields.Function(serialize=lambda obj: obj.deadl, deserialize=parse_date, required=True)
+    deadline = fields.Function(serialize=lambda obj: obj.deadline, deserialize=parse_date, required=True)
     attendance_date = fields.Function(serialize=lambda obj: obj.attendance_date, deserialize=parse_date, required=True)

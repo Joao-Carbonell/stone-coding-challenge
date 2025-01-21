@@ -1,8 +1,5 @@
-from flask import make_response, jsonify
-from marshmallow import ValidationError
-
-from app.schemas.attendance_schema import AttendanceSchema
 from app.services.attendance_service import AttendanceService
+
 
 class AttendanceController:
     """
@@ -49,4 +46,39 @@ class AttendanceController:
 
         return AttendanceService.update_attendance(data, id)
 
+    @staticmethod
+    def retrieve_attendance(id):
+        """
+        Updates the attendance record by delegating to the AttendanceService.
 
+        This function acts as a static method where it takes the attendance data
+        and its corresponding unique identifier, passing these parameters to the
+        `update_attendance` method in the `AttendanceService` class. The updated
+        attendance information is then returned.
+
+        :param data: Dictionary containing attendance details to be updated.
+        :type data: dict
+        :param id: Unique identifier for the attendance record to update.
+        :type id: int
+        :return: Updated attendance record data returned by AttendanceService.
+        :rtype: dict
+        """
+        return AttendanceService.retrieve_attendance(id)
+
+    @staticmethod
+    def get_all_attendances(request):
+        """
+        Retrieve all attendance records based on the request arguments.
+
+        This static method extracts the arguments from the provided request, converts
+        them into a dictionary, and passes them to the attendance service to retrieve
+        all attendance records.
+
+        :param request: The incoming request object containing query parameters.
+        :type request: flask.Request
+        :return: A list of attendances retrieved based on the provided arguments.
+        :rtype: List[dict]
+        """
+        args = request.args.to_dict()
+
+        return AttendanceService.get_all_attendances(args)

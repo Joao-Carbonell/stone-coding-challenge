@@ -6,8 +6,6 @@ from sqlalchemy.orm import sessionmaker
 
 db = SQLAlchemy()
 
-# Create a SQLAlchemy session
-session = Session(db)
 
 #Configuration class for db
 class Config:
@@ -27,9 +25,3 @@ class Config:
     """
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = "postgresql://postgres:admin@localhost:5432/kpi-api-database"
-
-
-    engine = create_engine(SQLALCHEMY_DATABASE_URI)
-
-
-    Session = sessionmaker(bind=engine)

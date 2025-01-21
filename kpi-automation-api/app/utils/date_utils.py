@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from marshmallow import ValidationError
 
 
@@ -61,3 +61,11 @@ def is_valid_format(date_str, fmt):
         return True
     except ValueError:
         return False
+def compare_date(date1, date2):
+    if date1 > date2:
+        raise ValueError('END_DATE_GREATER_THAN_START_DATE')
+    return True
+def business_count_days(date1, date2):
+    return sum(1 for day in (date1 + timedelta(days=i)
+                                   for i in range((date2 - date1).days + 1))
+                     if day.weekday() < 5)
