@@ -3,7 +3,7 @@ from flask_smorest import Blueprint, abort
 
 general_blueprint = Blueprint("Home",'general', url_prefix="/", description="API home")
 
-
+# Routes for API's general endpoints
 @general_blueprint.route("/")
 class HomeCollection(MethodView):
     """

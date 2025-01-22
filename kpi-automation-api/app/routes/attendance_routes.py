@@ -9,6 +9,7 @@ from app.schemas.attendance_schema import AttendanceSchema
 attendance_blueprint = Blueprint('api', 'api', url_prefix="/api",
                                  description="API endpoints" )
 
+# Routes for API's endpoints
 # @TODO: Add Schema for arguments and responses for all requests
 @attendance_blueprint.route("/")
 class AttendanceCollection(MethodView):
@@ -23,6 +24,7 @@ class AttendanceCollection(MethodView):
     :ivar decorators: A list of method decorators (Flask routing).
     :type decorators: list
     """
+
     @attendance_blueprint.response(200)
     def get(self):
         """
@@ -47,7 +49,9 @@ def create_attendance():
     :return: A response object containing the result of attendance creation, either a success message
              or an error response.
     :rtype: flask.Response
+    :parameter
     """
+    # Route for create an attendance
     return AttendanceController.create_attendance(request.json)
 
 @attendance_blueprint.route('/attendances/<int:id>', methods=['PUT'])

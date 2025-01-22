@@ -39,4 +39,4 @@ class AttendanceSchema(SQLAlchemySchema):
     angel = auto_field()
     pole = auto_field()
     deadline = fields.Function(serialize=lambda obj: obj.deadline, deserialize=parse_date, required=True)
-    attendance_date = fields.Function(serialize=lambda obj: obj.attendance_date, deserialize=parse_date, required=True)
+    attendance_date = fields.Function(serialize=lambda obj: obj.attendance_date, deserialize=parse_date, required=False)
