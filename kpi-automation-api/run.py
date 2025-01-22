@@ -8,6 +8,7 @@ Mainly script to initialize the flask server
  - When running in docker container dockerfile will use gunicorn
 """
 app = create_app()
+# Create db with app context
 with app.app_context():
     create_db()
 #Init flask server

@@ -39,7 +39,7 @@ class Attendance(db.Model):
     angel = db.Column('angel', db.String(255), nullable=False)
     pole = db.Column('pole', db.String(255), nullable=False)
     deadline = db.Column('deadline', db.DateTime, nullable=False)
-    attendance_date = db.Column('attendance_date', db.DateTime, nullable=False)
+    attendance_date = db.Column('attendance_date', db.DateTime, nullable=True)
 
     def __init__(self, id_attendance, id_client, angel, pole, deadline, attendance_date):
         self.id_attendance = id_attendance
@@ -65,3 +65,13 @@ class Attendance(db.Model):
             "attendance_date": self.attendance_date,
             "deadline": self.deadline,
         }
+    @staticmethod
+    def create_from_csv(csv_row):
+        return Attendance(
+            id_attendance=csv_row['id_atendimento'],
+            id_client=csv_row['id_cliente'],
+            angel=csv_row['angel'],
+            pole=csv_row['polo'],
+            deadline=csv_row['data_limite'],
+            attendance_date=csv_row.get('data_de_atendimento')
+        )

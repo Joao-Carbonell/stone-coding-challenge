@@ -16,7 +16,7 @@ class AttendanceCreationSchema(Schema):
     angel = fields.Str(required=True)
     pole = fields.Str(required=True)
     deadline = fields.Function(serialize=lambda obj: obj.deadline, deserialize=parse_date, required=True)
-    attendance_date = fields.Function(serialize=lambda obj: obj.attendance_date, deserialize=parse_date, required=True)
+    attendance_date = fields.Function(serialize=lambda obj: obj.attendance_date, deserialize=parse_date, required=False)
 
     @post_load
     def make_attendance(self, data, **kwargs):
@@ -29,7 +29,6 @@ class AttendanceCreationSchema(Schema):
 
 
     #TODO: add personalized validations on schema
-
     @validates('id_attendance')
     def validate_id_attendance(self, value):
         if value <= 0:

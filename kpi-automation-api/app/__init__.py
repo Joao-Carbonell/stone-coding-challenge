@@ -1,9 +1,11 @@
+import os
+
 from flask import Flask
 from flask_smorest import Api
 from app.config.config import Config
 from app.routes import register_routes
 from app.config.config import db
-
+from app.scripts.load_data_csv import load_csv_to_db
 
 """
 This __init__ class is responsible for create the app, 
@@ -30,5 +32,10 @@ def create_app():
     api = Api(app)
 
     register_routes(api)
+
+    with app.app_context():
+
+        csv_file_path = 'app/data/bd_desafio.csv'
+        load_csv_to_db(csv_file_path)
 
     return app
