@@ -1,0 +1,12 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: kpi-automation-api
+spec:
+  template:
+    spec:
+      containers:
+        - image: us-central1-docker.pkg.dev/pedra-pagamentos/kpi-automation-api/kpi-automation-api:latest
+          env:
+          ports:
+            - containerPort: 8000

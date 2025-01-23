@@ -1,6 +1,7 @@
 import os
 from datetime import timedelta
 
+from dotenv import load_dotenv
 from flask import Flask
 from flask_smorest import Api
 from app.config.config import Config, jwt
@@ -18,22 +19,27 @@ registering routes, and initialize the database
 def create_app():
     app = Flask(__name__)
 
-    app.config["API_TITLE"] = "KPI API"
-    app.config["API_VERSION"] = "v3"
-    app.config["OPENAPI_VERSION"] = "3.1.1"
-    app.config["OPENAPI_URL_PREFIX"] = "/"
-    app.config["OPENAPI_SWAGGER_UI_PATH"] = "/docs"
-    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    app.config["OPENAPI_REDOC_PATH"] = "/redoc"
-    app.config["OPENAPI_REDOC_UI_URL"] = "https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"
+    load_dotenv()
+    app.config["API_TITLE"] = os.environ.get('API_TITLE')
+    app.config["FLASK_DEBUG"] = os.environ.get('FLASK_DEBUG')
+    app.config["API_VERSION"] = os.environ.get('API_VERSION')
 
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
-    app.config['JWT_SECRET_KEY'] = "secret_key"
-    app.config['SECRET_KEY'] = 'secret_key'
-    app.config['JWT_TOKEN_LOCATION'] = ['headers']
+    app.config["OPENAPI_VERSION"] = os.environ.get('OPENAPI_VERSION')
+    app.config["OPENAPI_URL_PREFIX"] = os.environ.get('OPENAPI_URL_PREFIX')
+    app.config["OPENAPI_SWAGGER_UI_PATH"] = os.environ.get('OPENAPI_SWAGGER_UI_PATH')
+    app.config["OPENAPI_SWAGGER_UI_URL"] = os.environ.get('OPENAPI_SWAGGER_UI_URL')
+    app.config["OPENAPI_REDOC_PATH"] = os.environ.get('OPENAPI_REDOC_PATH')
+    app.config["OPENAPI_REDOC_UI_URL"] = os.environ.get('OPENAPI_REDOC_UI_URL')
+
+    app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
+    app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY')
+    app.config["JWT_TOKEN_LOCATION"] = os.environ.get('JWT_TOKEN_LOCATION')
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES', 3600)))
 
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'secret_key')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'secret_key')
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
     app.config.from_object(Config)
 
     db.init_app(app)

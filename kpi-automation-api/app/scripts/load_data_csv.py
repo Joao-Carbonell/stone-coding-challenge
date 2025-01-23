@@ -17,14 +17,31 @@ def validate_and_parse_dates(df):
     now = datetime.now()
     df['data_de_atendimento'] = df['data_de_atendimento'].apply(parse_date)
     df['data_limite'] = df['data_limite'].apply(parse_date)
-    # Filtrar datas inválidas ou futuras
+    # filter invalid and valid future data
     df = df[(df['data_de_atendimento'] <= now) & (df['data_limite'] <= now)]
     return df
 
 
 def load_csv_to_db(csv_file, chunksize=1000):
     """
-    Carrega os dados de um arquivo CSV para o banco de dados com processamento em blocos.
+    Function to load data from a CSV file into a database. It processes the file in
+    chunks and validates data before storing it in the database. The process also
+    checks if the file has been processed previously using a hash of the file, and
+    skips re-processing in such cases. After successful insertion, it logs the
+    processed data and updates the metadata about the file.
+
+    Args:
+        csv_file (str): The path to the CSV file that will be imported into the
+            database.
+        chunksize (int, optional): The number of rows to process at a time from the
+            CSV file. Defaults to 1000.
+
+    Raises:
+        Exception: Rolls back all changes made to the database in case of any error
+            during processing and logs the error message.
+
+    Returns:
+        None
     """
     try:
         file_hash = get_file_hash(csv_file)
