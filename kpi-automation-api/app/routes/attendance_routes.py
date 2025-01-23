@@ -1,15 +1,14 @@
-from flask import request, jsonify, make_response
+from flask import request
 from flask.views import MethodView
+from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint
 
-from app.controllers.analytics_controller import AnalyticsController
 from app.controllers.attendance_controller import AttendanceController
-from app.schemas.attendance_schema import AttendanceSchema
 
-attendance_blueprint = Blueprint('api', 'api', url_prefix="/api",
-                                 description="API endpoints" )
+attendance_blueprint = Blueprint('attendances', __name__, url_prefix="/api/attendances",
+                                 description="Attendance API endpoints" )
 
-# Routes for API's endpoints
+# Routes for Attendances API's endpoints
 # @TODO: Add Schema for arguments and responses for all requests
 @attendance_blueprint.route("/")
 class AttendanceCollection(MethodView):
@@ -26,6 +25,7 @@ class AttendanceCollection(MethodView):
     """
 
     @attendance_blueprint.response(200)
+    @jwt_required()
     def get(self):
         """
         Handles GET request to the endpoint
@@ -34,7 +34,8 @@ class AttendanceCollection(MethodView):
         """
         return {'message': 'Attendance API'}
 
-@attendance_blueprint.route('/attendances', methods=['POST'])
+@attendance_blueprint.route('/', methods=['POST'])
+@jwt_required()
 def create_attendance():
     """
     Handles the creation of a new attendance record. This function acts as the entry point
@@ -44,8 +45,6 @@ def create_attendance():
 
     :raises KeyError: Raised when required fields are missing in the request payload.
     :raises ValueError: Raised when provided data is invalid or its processing fails.
-    :param data: The JSON payload containing attendance information.
-    :type data: dict
     :return: A response object containing the result of attendance creation, either a success message
              or an error response.
     :rtype: flask.Response
@@ -54,7 +53,8 @@ def create_attendance():
     # Route for create an attendance
     return AttendanceController.create_attendance(request.json)
 
-@attendance_blueprint.route('/attendances/<int:id>', methods=['PUT'])
+@attendance_blueprint.route('/<int:id>', methods=['PUT'])
+@jwt_required()
 def update_attendance(id):
     """
     Updates the attendance record specified by the given ID. This operation
@@ -70,7 +70,8 @@ def update_attendance(id):
     """
     return AttendanceController.update_attendance(request.json, id)
 
-@attendance_blueprint.route('/attendances/<int:id>', methods=['GET'])
+@attendance_blueprint.route('/<int:id>', methods=['GET'])
+@jwt_required()
 def retrieve_attendance(id):
     """
     Handles the HTTP GET request to retrieve attendance details for a given
@@ -85,7 +86,8 @@ def retrieve_attendance(id):
     """
     return AttendanceController.retrieve_attendance(id)
 
-@attendance_blueprint.route('/attendances/', methods=['GET'])
+@attendance_blueprint.route('/', methods=['GET'])
+@jwt_required()
 def get_attendances():
     """
     Retrieves a list of all attendances.
@@ -99,53 +101,5 @@ def get_attendances():
     """
     return AttendanceController.get_all_attendances(request)
 
-@attendance_blueprint.route('/analytics/productivity_by_period/', methods=['GET'])
-def get_productivity_by_period():
-    """
-    Handles the HTTP GET request to retrieve productivity analytics for a specific
-    time period. This endpoint is designed to return insights on productivity metrics
-    calculated over a given timeframe, as provided by the
-    AnalyticsController's method.
 
-    :returns: The productivity analytics information for the requested time period
-        as provided by the AnalyticsController in an appropriate response format.
-    :rtype: flask.Response
-    """
-    return AnalyticsController.get_productivity_by_period()
-
-@attendance_blueprint.route('/analytics/productivity_by_period_with_angel/', methods=['GET'])
-def get_productivity_by_period_with_angel():
-    """
-    Handles the HTTP GET request for retrieving productivity analytics by specified
-    time periods with associated angel data.
-
-    This endpoint fetches and returns productivity analytics in association with
-    an "angel" entity. The specific functionality for data processing is delegated
-    to the `AnalyticsController.get_productivity_by_period_with_angel()` method.
-
-    :returns: The response from `AnalyticsController.get_productivity_by_period_with_angel()` method.
-    """
-    return AnalyticsController.get_productivity_by_period_with_angel()
-
-@attendance_blueprint.route('/analytics/productivity_by_angel/', methods=['GET'])
-def get_productivity_by_angel():
-
-    return AnalyticsController.get_productivity_by_angel()
-
-@attendance_blueprint.route('/analytics/productivity_by_logistics_pole_and_period/', methods=['GET'])
-def get_productivity_by_logistics_pole_and_period():
-    """
-    Retrieves productivity data filtered by logistics pole and period.
-
-    This function is part of the attendance blueprint and is responsible for
-    fetching productivity-related analytics within specific logistical poles and
-    periods, based on the requested parameters. It delegates the functionality
-    to the AnalyticsController.
-
-    :raises HTTPException: If the request fails or the query parameters are
-        invalid.
-    :return: Productivity data filtered by logistics pole and period.
-    :rtype: Response
-    """
-    return AnalyticsController.get_productivity_by_logistics_pole_and_period()
 

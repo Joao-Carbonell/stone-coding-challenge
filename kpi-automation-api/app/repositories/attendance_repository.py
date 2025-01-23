@@ -1,4 +1,4 @@
-from sqlalchemy import func, select, insert
+from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.sql import case
 

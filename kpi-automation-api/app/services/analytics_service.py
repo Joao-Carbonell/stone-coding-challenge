@@ -1,4 +1,3 @@
-import datetime
 
 from flask import make_response, jsonify
 from jsonschema.exceptions import ValidationError

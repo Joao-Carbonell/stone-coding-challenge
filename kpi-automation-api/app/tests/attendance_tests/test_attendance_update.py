@@ -180,10 +180,6 @@ class TestAttendanceUpdate(unittest.TestCase):
         in the provided data is an empty string instead of a valid identifier. Verifies that the
         response indicates invalid data and checks the associated error messages.
 
-        :param invalid_data: Copy of `valid_data` dictionary with an empty `id_client` value.
-        :type invalid_data: dict
-        :param response: The response object returned after invoking the `update_attendance` method.
-        :type response: Response
         :return: None
         :raises AssertionError: If test assertions fail.
         """
@@ -249,10 +245,6 @@ class TestAttendanceUpdate(unittest.TestCase):
         :raises AssertionError: If the test fails due to an unexpected response or undesired
             database activity.
 
-        :arg dict invalid_data: A copy of valid input data for updating attendance but with
-            an intentionally invalid id_client value (-1).
-        :arg int attendance_id: The ID of the attendance subject to the update operation.
-            This value is used by the update_attendance method.
 
         :return: None. The function performs test assertions to validate the behavior of
             the tested method.
@@ -285,13 +277,6 @@ class TestAttendanceUpdate(unittest.TestCase):
         :raises AssertionError: If the response does not have the correct HTTP status
             code, error message, or does not contain appropriate error details.
 
-        :param invalid_data: A copy of valid_data where the "angel" parameter has been
-            set to an empty string to trigger invalid data handling.
-        :type invalid_data: dict
-
-        :param response: The response object returned by the call to the
-            AttendanceService.update_attendance function.
-        :type response: Response
 
         :return: Ensures that the response status code is 400, contains the correct
             error messages, and no database operations have been performed.
@@ -351,8 +336,6 @@ class TestAttendanceUpdate(unittest.TestCase):
 
         :raises AssertionError: If the status code or error messages do not match
             the expected values.
-        :param invalid_data: Copy of valid data with an invalid "angel" value.
-        :type invalid_data: dict
         :return: None
         """
         invalid_data = self.valid_data.copy()
@@ -651,9 +634,6 @@ class TestAttendanceUpdate(unittest.TestCase):
             error message does not match the expected values.
         :raises AssertionError: If the rollback operation is not called.
 
-        :type invalid_data: dict
-        :param invalid_data: Dictionary containing mock valid attendance data
-            updated to include an invalid deadline format.
         """
         invalid_data = self.valid_data.copy()
         invalid_data["deadline"] = "2023-05-01T14:00:00"
@@ -703,12 +683,6 @@ class TestAttendanceUpdate(unittest.TestCase):
         the system rejects the operation and responds with proper error messages while
         ensuring no database operations are executed.
 
-        :param invalid_data: Dictionary containing attendance data input, but missing
-            the required "deadline" field.
-        :type invalid_data: dict
-        :param response: Mocked response returned by the `update_attendance` method containing
-            details about validation errors.
-        :type response: Response
 
         :return: None.
         """

@@ -164,9 +164,6 @@ class TestAttendanceCreation(unittest.TestCase):
         or commit are executed. This test enforces data integrity and checks for
         proper error handling in the service.
 
-        :param invalid_data: Dictionary containing attendance data with an invalid
-            negative ID.
-        :type invalid_data: dict
 
         :return: The test does not return a value but instead uses assertions to
             validate the behavior of the method under test.
@@ -436,11 +433,6 @@ class TestAttendanceCreation(unittest.TestCase):
         string, and return the appropriate error response upon invalid input.
 
         Attributes:
-            invalid_data (dict): A copy of valid input data with a non-string value for the
-            "pole" key.
-            response (Response): The response returned from the method being tested.
-            db_session_mock (Mock): A mocked instance of the database session to
-            ensure no operations are executed on invalid input.
 
         Test Execution:
             1. Modify valid input data to include an invalid non-string value for the "pole"
@@ -642,9 +634,6 @@ class TestAttendanceCreation(unittest.TestCase):
         indicating that attendance creation has failed due to invalid date formatting. It also
         verifies that the database transaction was rolled back properly during the failure.
 
-        :param invalid_data: The payload containing all required fields for attendance,
-            but with the deadline field in an invalid format.
-        :type invalid_data: dict
 
         :return: Asserts the failure response from the service including the corresponding error
             code and message, verifies that the rollback mechanism of the database is triggered.

@@ -21,6 +21,8 @@ services:
       - "8000:8000"
     environment:
       - DB_URL=postgresql://postgres:admin@kpi-database:5432/kpi-api-database
+      - JWT_SECRET_KEY=jwt_secret_key
+      - SECRET_KEY=secret_key
     depends_on:
           - kpi-database
     networks:

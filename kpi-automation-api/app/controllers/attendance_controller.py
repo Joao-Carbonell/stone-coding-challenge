@@ -56,8 +56,6 @@ class AttendanceController:
         `update_attendance` method in the `AttendanceService` class. The updated
         attendance information is then returned.
 
-        :param data: Dictionary containing attendance details to be updated.
-        :type data: dict
         :param id: Unique identifier for the attendance record to update.
         :type id: int
         :return: Updated attendance record data returned by AttendanceService.

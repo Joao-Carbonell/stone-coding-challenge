@@ -1,4 +1,4 @@
-from flask import jsonify, make_response, request
+from flask import request
 
 from app.services.analytics_service import AnalyticsService
 
@@ -13,8 +13,6 @@ class AnalyticsController:
     and forward the processed data to the service layer methods in the form of a call, returning
     the service response back to the user.
 
-    :ivar request: Flask request object to access incoming HTTP request data like arguments.
-    :type request: flask.Request
     """
     @staticmethod
     def get_productivity_by_period():
@@ -42,6 +40,19 @@ class AnalyticsController:
 
     @staticmethod
     def get_productivity_by_angel():
+        """
+        Retrieves productivity data filtered by angel parameters.
+
+        This static method extracts arguments from the HTTP request as a dictionary
+        and passes them to the `get_productivity_by_angel` method of the
+        `AnalyticsService` class for processing. The result is then returned.
+
+        :raises TypeError: If the returned value from the service does not
+            conform to the expected output type.
+
+        :return: Productivity data retrieved based on specified parameters.
+        :rtype: Any
+        """
         args = request.args.to_dict()
         return AnalyticsService.get_productivity_by_angel(args)
 

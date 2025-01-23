@@ -1,8 +1,10 @@
 import os
+from datetime import timedelta
 
 from flask import Flask
 from flask_smorest import Api
-from app.config.config import Config
+from app.config.config import Config, jwt
+from app.models.client.client import Client
 from app.routes import register_routes
 from app.config.config import db
 from app.scripts.load_data_csv import load_csv_to_db
@@ -25,9 +27,18 @@ def create_app():
     app.config["OPENAPI_REDOC_PATH"] = "/redoc"
     app.config["OPENAPI_REDOC_UI_URL"] = "https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"
 
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+    app.config['JWT_SECRET_KEY'] = "secret_key"
+    app.config['SECRET_KEY'] = 'secret_key'
+    app.config['JWT_TOKEN_LOCATION'] = ['headers']
+
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'secret_key')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'secret_key')
     app.config.from_object(Config)
 
     db.init_app(app)
+
+    jwt.init_app(app)
 
     api = Api(app)
 
@@ -37,5 +48,6 @@ def create_app():
 
         csv_file_path = 'app/data/bd_desafio.csv'
         load_csv_to_db(csv_file_path)
+
 
     return app

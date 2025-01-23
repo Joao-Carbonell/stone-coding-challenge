@@ -1,11 +1,8 @@
-import os
+from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
-from flask_sqlalchemy.session import Session
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 db = SQLAlchemy()
-
+jwt = JWTManager()
 
 #Configuration class for db
 class Config:
