@@ -23,4 +23,4 @@ class Config:
     :type SQLALCHEMY_DATABASE_URI: str
     """
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', 'postgresql://postgres:hE-iAf3L-s%2Bz7%5Bx%4@035.224.238.133:5432/kpi-api-database')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')

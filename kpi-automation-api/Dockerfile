@@ -17,6 +17,4 @@ COPY . /app/
 EXPOSE 8000
 
 # Run flask
-CMD ["uvicorn", "run:app", "--host", "0.0.0.0", "--port", "8080"]
-
-
+CMD ["python", "run.py"]

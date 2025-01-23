@@ -1,13 +1,26 @@
 services:
+  kpi-database:
+    image: postgres:13
+    container_name: kpi-database
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: kpi-api-database
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app_network
   kpi-automation-api:
     container_name: kpi-automation-api
-    image: pedra-pagamentos/kpi-automation-api:latest
+    image: pedra-pagamentos/kpi-automation-api:1.0.0
     build: .
     ports:
       - "8000:8000"
     environment:
-      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:hE-iAf3L-s%2Bz7%5Bx%4@035.224.238.133:5432/kpi-api-database
-
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:admin@kpi-database:5432/kpi-api-database
       - API_TITLE=KPI API
       - FLASK_DEBUG=0
       - API_VERSION=v3
@@ -18,7 +31,6 @@ services:
       - OPENAPI_SWAGGER_UI_URL=https://cdn.jsdelivr.net/npm/swagger-ui-dist/
       - OPENAPI_REDOC_PATH=/redoc
       - OPENAPI_REDOC_UI_URL=https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js
-      - PORT=8000
 
       - JWT_SECRET_KEY=secret_key
       - SECRET_KEY=secret_key
@@ -32,3 +44,5 @@ networks:
   app_network:
     driver: bridge
 
+volumes:
+  postgres-data:

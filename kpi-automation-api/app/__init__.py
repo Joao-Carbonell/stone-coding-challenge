@@ -39,8 +39,9 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'secret_key')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'secret_key')
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
     app.config.from_object(Config)
+
+    print("SQLALCHEMY_DATABASE_URI:", str(os.getenv("SQLALCHEMY_DATABASE_URI")))
 
     db.init_app(app)
 
@@ -51,7 +52,7 @@ def create_app():
     register_routes(api)
 
     with app.app_context():
-
+        print("dlkas dlaksjd çlaks dçolaksjd çalksjlaç~s jdaçl")
         csv_file_path = 'app/data/bd_desafio.csv'
         load_csv_to_db(csv_file_path)
 
