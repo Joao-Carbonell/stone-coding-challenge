@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from datetime import datetime
-from app import db
+from app import db, Client
 from app.models.attendance.attendance_model import Attendance
 from app.models.file_record_model import FileRecord
 from app.scripts.file_processor import get_file_hash, check_file_processed
@@ -22,26 +22,26 @@ def validate_and_parse_dates(df):
     return df
 
 
-def load_csv_to_db(csv_file_path, chunksize=1000):
+def load_csv_to_db(csv_file, chunksize=1000):
     """
     Carrega os dados de um arquivo CSV para o banco de dados com processamento em blocos.
     """
     try:
-        file_hash = get_file_hash(csv_file_path)
+        file_hash = get_file_hash(csv_file)
         if check_file_processed(file_hash):
             logging.info("File already processed. Skipping...")
             return
-        # Leitura em blocos
-        chunk_iter = pd.read_csv(csv_file_path, sep=';', chunksize=chunksize)
+        # Read (blocks)
+        chunk_iter = pd.read_csv(csv_file, sep=';', chunksize=chunksize)
 
         for chunk in chunk_iter:
-            # Verifica colunas necessárias
+            # Indentify necessary columns
             required_columns = ['id_atendimento', 'id_cliente', 'angel', 'polo', 'data_limite', 'data_de_atendimento']
             if not all(col in chunk.columns for col in required_columns):
                 logging.error("CSV file is missing one or more required columns.")
                 return
 
-            # Validar e processar datas
+            # Validate date
             chunk = validate_and_parse_dates(chunk)
 
             # Transformar dados para objetos Attendance
@@ -50,15 +50,22 @@ def load_csv_to_db(csv_file_path, chunksize=1000):
                 for _, row in chunk.iterrows()
             ]
 
-            # Inserir em lote no banco de dados
+            # Insert data (packages)
             db.session.bulk_save_objects(attendances)
 
             db.session.commit()
             logging.info(f"Processed {len(attendances)} records in current chunk.")
-        new_record = FileRecord(file_name=csv_file_path, processed_at=datetime.now(), hash=get_file_hash(csv_file_path))
+        new_record = FileRecord(file_name=csv_file, processed_at=datetime.now(), hash=get_file_hash(csv_file))
         db.session.add(new_record)
         db.session.commit()
         logging.info("CSV data loaded successfully into the database.")
+
+        if not Client.query.first():
+            secret = 'meu_segredo'
+            client = Client(client_key='meu_cliente', client_secret=Client.hash_secret(secret))
+            db.session.add(client)
+            db.session.commit()
+            print(f'Chave: meu_cliente, Segredo: {secret}')
 
     except Exception as e:
         db.session.rollback()

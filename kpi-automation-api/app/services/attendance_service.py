@@ -1,5 +1,5 @@
 from flask import jsonify, make_response
-from sqlalchemy import insert, select, desc
+from sqlalchemy import insert, desc
 from sqlalchemy.exc import SQLAlchemyError
 from app.dto.attendance import AttendanceCreationSchema
 from app.models.attendance.attendance_model import Attendance
@@ -33,7 +33,7 @@ class AttendanceService:
             return make_response(jsonify({'message': 'INVALID_DATA', 'errors': ve.messages}), 400)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({'message': 'DATABASE_ERROR', 'error': str(e)}), 500)
+            return make_response(jsonify({'message': 'DATABASE_ERROR', 'error': str(e.__cause__)}), 500)
         except Exception as e:
             db.session.rollback()
             return make_response(jsonify({'message': 'ATTENDANCE_NOT_CREATED', 'error': str(e)}), 500)
@@ -46,6 +46,7 @@ class AttendanceService:
         try:
             # Using the attendance repository to find an attendance register on db
             attendance_record = AttendanceRepository.get_attendance_by_id(id)
+
 
             # @TODO: Remove validations from services
             # Uses the schema validator to validate the data

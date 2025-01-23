@@ -1,6 +1,4 @@
 import hashlib
-import logging
-from datetime import datetime
 
 from app.config.config import db
 from app.models.file_record_model import FileRecord

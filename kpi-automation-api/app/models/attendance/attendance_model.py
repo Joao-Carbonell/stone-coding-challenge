@@ -5,28 +5,31 @@ from app.config.config import db
 #TODO: Add python documentation
 class Attendance(db.Model):
     """
-    Represents the attendance records with relevant metadata.
+    Represents the Attendance model, which encapsulates data about a single attendance record.
 
-    This class is designed for handling attendance records including details about
-    the client, associated angel, pole, and significant dates such as deadline and
-    attendance date. It includes validation for attribute assignments and ensures
-    that data integrity is maintained. It is a SQLAlchemy model, hence linked with a
-    backend database.
+    This class defines the database schema for the `attendances` table and provides methods for
+    representation, serialization, and creation of attendance instances from CSV data. The class
+    serves as the core model for managing attendance-related operations, and all attributes align
+    with the database fields.
 
-    :ivar _id: Unique identifier for the attendance record.
-    :type _id: int
-    :ivar _id_attendance: External attendance identifier.
-    :type _id_attendance: int
-    :ivar _id_client: Unique identifier of the associated client.
-    :type _id_client: int
-    :ivar _angel: Description or identifier of the angel in the context of the attendance.
-    :type _angel: str
-    :ivar _pole: Description or identifier of the pole in the context of the attendance.
-    :type _pole: str
-    :ivar _deadline: Deadline datetime for the attendance record.
-    :type _deadline: datetime
-    :ivar _attendance_date: Date and time of the attendance record.
-    :type _attendance_date: datetime
+    :ivar id: Primary key for the attendance record.
+    :type id: int
+    :ivar created_at: Timestamp when the attendance record was created.
+    :type created_at: datetime
+    :ivar updated_at: Timestamp when the attendance record was last updated.
+    :type updated_at: datetime
+    :ivar id_attendance: Unique identifier for the attendance instance, provided externally.
+    :type id_attendance: int
+    :ivar id_client: Identifier for the client associated with the attendance.
+    :type id_client: int
+    :ivar angel: Name of the associated angel (representative).
+    :type angel: str
+    :ivar pole: Name of the associated pole or center.
+    :type pole: str
+    :ivar deadline: The deadline assigned to the attendance.
+    :type deadline: datetime
+    :ivar attendance_date: The date on which the attendance occurred, if applicable.
+    :type attendance_date: datetime or None
     """
     __tablename__ = 'attendances'
 
@@ -34,8 +37,8 @@ class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    id_attendance = db.Column('id_attendance', db.Integer, nullable=False)
-    id_client = db.Column('id_client', db.Integer, nullable=False)
+    id_attendance = db.Column('id_attendance', db.Integer, nullable=False, unique=True)
+    id_client = db.Column('id_client', db.Integer, nullable=False, unique=True)
     angel = db.Column('angel', db.String(255), nullable=False)
     pole = db.Column('pole', db.String(255), nullable=False)
     deadline = db.Column('deadline', db.DateTime, nullable=False)

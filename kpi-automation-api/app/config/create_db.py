@@ -1,4 +1,5 @@
-from app import db, create_app
+from app import db, create_app, Client
+
 
 def create_db():
     """
@@ -18,3 +19,10 @@ def create_db():
     app = create_app()
     with app.app_context():
         db.create_all()
+        with app.app_context():
+            db.create_all()
+            if not Client.query.first():
+                secret = 'secret_key'
+                client = Client(client_key='my_client', client_secret=Client.hash_secret(secret))
+                db.session.add(client)
+                db.session.commit()
