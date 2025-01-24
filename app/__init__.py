@@ -42,10 +42,8 @@ def create_app():
 
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    print("API_VERSIONssss:", str(os.getenv("API_VERSION")))
     app.config["SQLALCHEMY_DATABASE_URI"] = connect_tcp_socket()
 
-    print("API_VERSIONssss2:", str(os.getenv("API_VERSION")))
     app.config.from_object(Config)
 
 
