@@ -15,7 +15,7 @@ services:
 #      - app_network
   kpi-automation-api:
     container_name: kpi-automation-api
-    image: pedra-pagamentos/kpi-automation-api:latest
+    image: kpi-automation-api:latest
     build: .
     ports:
       - "8000:8000"
