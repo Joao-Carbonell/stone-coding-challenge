@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from datetime import datetime
-from app import db, Client
+from app import db, ApiClient
 from app.models.attendance.attendance_model import Attendance
 from app.models.file_record_model import FileRecord
 from app.scripts.file_processor import get_file_hash, check_file_processed
@@ -77,9 +77,9 @@ def load_csv_to_db(csv_file, chunksize=1000):
         db.session.commit()
         logging.info("CSV data loaded successfully into the database.")
 
-        if not Client.query.first():
+        if not ApiClient.query.first():
             secret = 'meu_segredo'
-            client = Client(client_key='meu_cliente', client_secret=Client.hash_secret(secret))
+            client = ApiClient(client_key='meu_cliente', client_secret=ApiClient.hash_secret(secret))
             db.session.add(client)
             db.session.commit()
             print(f'Chave: meu_cliente, Segredo: {secret}')

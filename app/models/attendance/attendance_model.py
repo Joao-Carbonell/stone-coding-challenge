@@ -20,7 +20,7 @@ class Attendance(db.Model):
     :type updated_at: datetime
     :ivar id_attendance: Unique identifier for the attendance instance, provided externally.
     :type id_attendance: int
-    :ivar id_client: Identifier for the client associated with the attendance.
+    :ivar id_client: Identifier for the api_client associated with the attendance.
     :type id_client: int
     :ivar angel: Name of the associated angel (representative).
     :type angel: str
@@ -37,8 +37,8 @@ class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-    id_attendance = db.Column('id_attendance', db.Integer, nullable=False, unique=True)
-    id_client = db.Column('id_client', db.Integer, nullable=False, unique=True)
+    id_attendance = db.Column('id_attendance', db.Integer, nullable=False)
+    id_client = db.Column('id_client', db.Integer, nullable=False)
     angel = db.Column('angel', db.String(255), nullable=False)
     pole = db.Column('pole', db.String(255), nullable=False)
     deadline = db.Column('deadline', db.DateTime, nullable=False)

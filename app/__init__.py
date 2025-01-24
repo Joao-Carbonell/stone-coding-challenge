@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_smorest import Api
 from app.config.config import Config, jwt, connect_tcp_socket
-from app.models.client.client import Client
+from app.models.api_client.api_client import ApiClient
 from app.routes import register_routes
 from app.config.config import db
 from app.scripts.load_data_csv import load_csv_to_db

@@ -1,4 +1,4 @@
-from app import db, create_app, Client
+from app import db, create_app, ApiClient
 
 
 def create_db():
@@ -21,8 +21,8 @@ def create_db():
         db.create_all()
         with app.app_context():
             db.create_all()
-            if not Client.query.first():
+            if not ApiClient.query.first():
                 secret = 'secret_key'
-                client = Client(client_key='my_client', client_secret=Client.hash_secret(secret))
+                client = ApiClient(api_client_key='my_client', api_client_secret=ApiClient.hash_secret(secret))
                 db.session.add(client)
                 db.session.commit()

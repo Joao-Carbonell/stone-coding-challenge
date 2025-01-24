@@ -20,7 +20,7 @@ class AttendanceSchema(SQLAlchemySchema):
 
     :ivar id_attendance: Unique identifier for the attendance record.
     :type id_attendance: int
-    :ivar id_client: Identifier for the client associated with the attendance.
+    :ivar id_client: Identifier for the api_client associated with the attendance.
     :type id_client: int
     :ivar angel: Name or identifier of the associated angel.
     :type angel: str

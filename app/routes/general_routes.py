@@ -2,7 +2,8 @@ from flask import request, jsonify
 from flask.views import MethodView
 from flask_smorest import Blueprint
 
-from app.models.client.client import Client
+from app.controllers.authorization_controller import AuthorizationController
+from app.models.api_client.api_client import ApiClient
 
 general_blueprint = Blueprint("Home",'general', url_prefix="/", description="API home")
 
@@ -25,16 +26,7 @@ class HomeCollection(MethodView):
 
 @general_blueprint.response(200, description="/token")
 def get_token():
-    data = request.json
-    if not data or 'client_key' not in data or 'client_secret' not in data:
-        return jsonify({'error': 'Chave e segredo são obrigatórios'}), 400
-
-    client = Client.query.filter_by(client_key=data['client_key']).first()
-    if not client or not client.verify_secret(data['client_secret']):
-        return jsonify({'error': 'Credenciais inválidas'}), 401
-
-    token = create_access_token(identity={'client_key': client.client_key})
-    return jsonify({'access_token': token})
+    return AuthorizationController.get_token()
 
 @general_blueprint.route("/home")
 class HomeCollection(MethodView):

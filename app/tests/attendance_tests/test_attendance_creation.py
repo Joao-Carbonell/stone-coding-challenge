@@ -249,7 +249,7 @@ class TestAttendanceCreation(unittest.TestCase):
 
     def test_create_attendance_negative_id_client(self):
         """
-        Tests the creation of an attendance record with an invalid client ID
+        Tests the creation of an attendance record with an invalid api_client ID
         (negative value). The test checks the response from the service,
         the returned error messages, and verifies that no database operations
         are performed when the input data is invalid.
