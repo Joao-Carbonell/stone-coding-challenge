@@ -4,7 +4,7 @@ from datetime import timedelta
 from dotenv import load_dotenv
 from flask import Flask
 from flask_smorest import Api
-from app.config.config import Config, jwt
+from app.config.config import Config, jwt, connect_tcp_socket
 from app.models.client.client import Client
 from app.routes import register_routes
 from app.config.config import db
@@ -39,9 +39,16 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'secret_key')
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'secret_key')
 
+
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    print("API_VERSIONssss:", str(os.getenv("API_VERSION")))
+    app.config["SQLALCHEMY_DATABASE_URI"] = connect_tcp_socket()
+
+    print("API_VERSIONssss2:", str(os.getenv("API_VERSION")))
     app.config.from_object(Config)
 
-    print("API_VERSION:", str(os.getenv("API_VERSION")))
+
 
     db.init_app(app)
 
