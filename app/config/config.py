@@ -23,9 +23,6 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
 
 def connect_tcp_socket() -> str:
-    db_user = os.environ["DB_USER"]
-    db_pass = os.environ["DB_PASS"]
-    db_name = os.environ["DB_NAME"]
 
     # if os.getenv("FLASK_DEBUG") == "1":
     #     host = "127.0.0.1"
