@@ -1,14 +1,25 @@
 # Python image
 FROM python:3.10-slim
 
+
+ARG ENV=production
+
+
+ENV APP_ENV=$ENV
+
 # Defining directory
 WORKDIR /app
 
 # Coping the requirements.txt
 COPY requirements.txt /app/
 
-# Coping the requirements.txt
-COPY .env /app/.env
+COPY . /app/
+RUN if [ "$APP_ENV" = "development" ]; then \
+      echo "Copying .env into container..."; \
+      cp /app/.env /app/.env; \
+    else \
+      echo "Production environment, ignoring .env..."; \
+    fi
 
 # Install dependencies
 RUN pip install -r requirements.txt
