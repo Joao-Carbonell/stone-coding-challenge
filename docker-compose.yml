@@ -1,20 +1,20 @@
 services:
-#  kpi-database:
-#    image: postgres:13
-#    container_name: kpi-database
-#    ports:
-#      - "5432:5432"
-#    restart: always
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: admin
-#      POSTGRES_DB: kpi-api-database
-#    volumes:
-#      - postgres-data:/var/lib/postgresql/data
-#    networks:
-#      - app_network
+  kpi-database:
+    image: postgres:13
+    container_name: kpi-database
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: kpi-api-database
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app_network
   kpi-automation-api:
-    container_name: kpi-automation-api
+    container_name: kpi-automation-apis
     image: kpi-automation-api:latest
     build: .
     ports:

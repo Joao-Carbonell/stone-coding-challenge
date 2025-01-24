@@ -1,0 +1,535 @@
+{
+	"info": {
+		"_postman_id": "43abcb1c-4120-46b4-9c99-f5c81b449e7e",
+		"name": "kpi-automation-api",
+		"description": "API for automation the data colletance to support the KPI analyze.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41053219"
+	},
+	"item": [
+		{
+			"name": "home",
+			"item": [
+				{
+					"name": "home",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/home",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"home"
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve data from the /api/home route. The response of this request is documented as a JSON schema below:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"property1\": {\n      \"type\": \"string\"\n    },\n    \"property2\": {\n      \"type\": \"number\"\n    },\n    \"property3\": {\n      \"type\": \"boolean\"\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "home-api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/attendance",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendance"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "attendance",
+			"item": [
+				{
+					"name": "get-attendance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/attendances/1213",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendances",
+								"1213"
+							]
+						},
+						"description": "The endpoint retrieves the attendance details for a specific ID.\n\n### Response\n\nThe response is in JSON format and has the following schema:\n\n``` json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"attendance\": {\n            \"type\": \"object\",\n            \"properties\": {\n                \"angel\": {\n                    \"type\": \"string\"\n                },\n                \"attendance_date\": {\n                    \"type\": \"string\"\n                },\n                \"deadline\": {\n                    \"type\": \"string\"\n                },\n                \"id\": {\n                    \"type\": \"integer\"\n                },\n                \"id_attendance\": {\n                    \"type\": \"integer\"\n                },\n                \"id_client\": {\n                    \"type\": \"integer\"\n                },\n                \"pole\": {\n                    \"type\": \"string\"\n                }\n            }\n        },\n        \"message\": {\n            \"type\": \"string\"\n        }\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "get-all-attendances",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/attendances/?sort=deadline&deadline=12/12/2021",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendances",
+								""
+							],
+							"query": [
+								{
+									"key": "angel",
+									"value": "dasdasda",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "angel",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "deadline"
+								},
+								{
+									"key": "deadline",
+									"value": "12/12/2021"
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve the list of attendances. The response of this request is documented as a JSON schema below:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"attendances\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"id\": {\n            \"type\": \"integer\"\n          },\n          \"date\": {\n            \"type\": \"string\",\n            \"format\": \"date\"\n          },\n          \"student_id\": {\n            \"type\": \"integer\"\n          },\n          \"status\": {\n            \"type\": \"string\"\n          }\n        }\n      }\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "create-attendance",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id_attendance\": 4,\r\n        \"id_client\": 3,\r\n        \"angel\": \"dasdasda\",\r\n        \"pole\": \"Rio de Janeiro\",\r\n        \"deadline\": \"20/05/2021\",\r\n        \"attendance_date\": \"01/12/2021\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.170:8000/api/attendances",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"170"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendances"
+							]
+						},
+						"description": "\nThis endpoint makes an HTTP POST request to create a new attendance record. The request should include the \"id_attendance\", \"id_client\", \"angel\", \"pole\", \"deadline\", and \"attendance_date\" fields in the request body.\n\n### Request Body\n- id_attendance (number): The ID of the attendance.\n- id_client (number): The ID of the client.\n- angel (string): The name of the angel.\n- pole (string): The location of the attendance.\n- deadline (string): The deadline for the attendance.\n- attendance_date (string): The date of the attendance.\n\n### Response\nThe response of this request is a JSON schema representing the structure of the response data.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "update-attendance",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_attendance\": 4,\r\n    \"id_client\": 3,\r\n    \"angel\" : \"Bruna Bandoli Ferreira\",\r\n    \"pole\" : \"DF - BRASILIA\",\r\n    \"deadline\": \"29/06/2021  09:09:30\",\r\n    \"attendance_date\": \"28/06/2021  09:01:19\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/attendances/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendances",
+								"2"
+							]
+						},
+						"description": "### Update Attendance\n\nThis endpoint is used to update attendance records.\n\n#### Request Body\n\n- id_attendance (integer): The ID of the attendance record.\n    \n- id_client (integer): The ID of the client associated with the attendance.\n    \n- angel (string): The name of the angel.\n    \n- pole (string): The email address of the pole.\n    \n- deadline (string): The deadline for the attendance.\n    \n- attendance_date (string): The date and time of the attendance.\n    \n\n#### Response\n\nThe response of this request is a JSON object conforming to the following schema:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"status\": {\n      \"type\": \"string\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "productivity",
+			"item": [
+				{
+					"name": "get-productivity",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/analytics/productivity_by_period/?start_date=01/01/2021&end_date=31/12/2021",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"analytics",
+								"productivity_by_period",
+								""
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "01/01/2021"
+								},
+								{
+									"key": "end_date",
+									"value": "31/12/2021"
+								}
+							]
+						},
+						"description": "The endpoint retrieves productivity data for a specific period. It accepts a start date and an end date as query parameters in the URL.\n\n### Response\n\nThe response is in JSON format and has the following structure:\n\n- `message` (string, optional): A message related to the response.\n    \n- `productivity_by_period` (array): An array of objects containing productivity data for the specified period.\n    \n    - `angel` (string): The name of the angel or employee.\n        \n    - `productivity_mean` (number): The average productivity for the period.\n        \n    - `total_attendances` (number): The total number of attendances for the period.\n        \n\nExample:\n\n``` json\n{\n    \"message\": \"\",\n    \"productivity_by_period\": [\n        {\n            \"angel\": \"\",\n            \"productivity_mean\": 0,\n            \"total_attendances\": 0\n        }\n    ]\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "get-productivity-with-angel",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNzU4Nzk1MCwianRpIjoiMDI3MzM1YmMtNjQ4ZS00YjljLWE3Y2UtZTA3NDU1YTY2Mzg4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjbGllbnRfa2V5IjoibXlfY2xpZW50In0sIm5iZiI6MTczNzU4Nzk1MCwiY3NyZiI6IjM4NmZmYjcyLWQ1MWQtNDUwOC05M2FjLTYxMzNkOWRmZGJmZCIsImV4cCI6MTczNzU5MTU1MH0.Le0uov5l3_e8LhO1dpaLRXCuR6YHw95Wq2hjFec33Fc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/analytics/productivity_by_period_with_angel/?angel=Fabricio Bandoli Virgilio&start_date=28/06/2021&end_date=29/06/2021",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"analytics",
+								"productivity_by_period_with_angel",
+								""
+							],
+							"query": [
+								{
+									"key": "angel",
+									"value": "Fabricio Bandoli Virgilio"
+								},
+								{
+									"key": "start_date",
+									"value": "28/06/2021"
+								},
+								{
+									"key": "end_date",
+									"value": "29/06/2021"
+								}
+							]
+						},
+						"description": "\nThe endpoint retrieves productivity data for a specific angel within a specified time period. The request should include the angel's name, start date, and end date as query parameters.\n\nThe response is in JSON format with a status code of 201. The response body includes a \"message\" field and an array \"productivity_by_period\" containing objects with \"angel\", \"business_days\", \"productivity_mean\", and \"total_attendances\" fields.\n\nHere is the JSON schema for the response:\n```json\n{\n    \"type\": \"object\",\n    \"properties\": {\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"productivity_by_period\": {\n            \"type\": \"array\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"angel\": {\n                        \"type\": \"string\"\n                    },\n                    \"business_days\": {\n                        \"type\": \"integer\"\n                    },\n                    \"productivity_mean\": {\n                        \"type\": \"integer\"\n                    },\n                    \"total_attendances\": {\n                        \"type\": \"integer\"\n                    }\n                }\n            }\n        }\n    }\n}\n```\n"
+					},
+					"response": []
+				},
+				{
+					"name": "get-productivity-by-angel",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNzU4Nzk1MCwianRpIjoiMDI3MzM1YmMtNjQ4ZS00YjljLWE3Y2UtZTA3NDU1YTY2Mzg4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjbGllbnRfa2V5IjoibXlfY2xpZW50In0sIm5iZiI6MTczNzU4Nzk1MCwiY3NyZiI6IjM4NmZmYjcyLWQ1MWQtNDUwOC05M2FjLTYxMzNkOWRmZGJmZCIsImV4cCI6MTczNzU5MTU1MH0.Le0uov5l3_e8LhO1dpaLRXCuR6YHw95Wq2hjFec33Fc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/analytics/productivity_by_angel/?angel=Jônatas Xará Magalhães",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"analytics",
+								"productivity_by_angel",
+								""
+							],
+							"query": [
+								{
+									"key": "angel",
+									"value": "Jônatas Xará Magalhães"
+								},
+								{
+									"key": "start_date",
+									"value": "28/06/2021",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "29/06/2021",
+									"disabled": true
+								}
+							]
+						},
+						"description": "\nThis endpoint retrieves the productivity analytics for a specific angel. The request should be sent via an HTTP GET to the specified URL with the 'angel' parameter set to the name of the angel for whom the productivity analytics are required.\n\nThe response of this request can be documented as a JSON schema as follows:\n\n```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"angel_name\": {\n      \"type\": \"string\"\n    },\n    \"total_hours_worked\": {\n      \"type\": \"number\"\n    },\n    \"tasks_completed\": {\n      \"type\": \"number\"\n    },\n    \"average_productivity\": {\n      \"type\": \"number\"\n    }\n  }\n}\n```\n"
+					},
+					"response": []
+				},
+				{
+					"name": "get-productivity-by-pole-and-period",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNzU4Nzk1MCwianRpIjoiMDI3MzM1YmMtNjQ4ZS00YjljLWE3Y2UtZTA3NDU1YTY2Mzg4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJjbGllbnRfa2V5IjoibXlfY2xpZW50In0sIm5iZiI6MTczNzU4Nzk1MCwiY3NyZiI6IjM4NmZmYjcyLWQ1MWQtNDUwOC05M2FjLTYxMzNkOWRmZGJmZCIsImV4cCI6MTczNzU5MTU1MH0.Le0uov5l3_e8LhO1dpaLRXCuR6YHw95Wq2hjFec33Fc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/analytics/productivity_by_logistics_pole_and_period/?pole=DF - BRASILIA&start_date=01/01/2021&end_date=12/12/2023",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"analytics",
+								"productivity_by_logistics_pole_and_period",
+								""
+							],
+							"query": [
+								{
+									"key": "pole",
+									"value": "DF - BRASILIA"
+								},
+								{
+									"key": "start_date",
+									"value": "01/01/2021"
+								},
+								{
+									"key": "end_date",
+									"value": "12/12/2023"
+								}
+							]
+						},
+						"description": "\nThis endpoint retrieves productivity data based on the logistics pole and time period. The HTTP GET request should be sent to http://127.0.0.1:8000/api/analytics/productivity_by_logistics_pole_and_period/ with the following query parameters:\n- pole: (string) The logistics pole for which the productivity data is to be retrieved.\n- start_date: (string) The start date of the time period for which the productivity data is to be retrieved.\n- end_date: (string) The end date of the time period for which the productivity data is to be retrieved.\n\nThe response of this request is a JSON schema representing the productivity data, including the relevant fields and their data types. \n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authorization",
+			"item": [
+				{
+					"name": "token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.environment.set('BEARER', jsonData.token);\r",
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - token, type, and expiration\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.token).to.exist;\r",
+									"    pm.expect(responseData.type).to.exist;\r",
+									"    pm.expect(responseData.expiration).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Token is in valid JWT format\", function () {\r",
+									"    const responseData = pm.response.text();\r",
+									"\r",
+									"    pm.expect(responseData).to.match(/^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$/);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"client_key\": \"my_client\",\r\n  \"client_secret\": \"secret_key\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/authorization/token",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"authorization",
+								"token"
+							]
+						},
+						"description": "The HTTP POST request to the /authorization/token endpoint is used to obtain an authorization token. The request requires a raw body payload with the client_key and client_secret parameters.\n\n### Request Body\n\n- client_key (string): The client key for authorization.\n    \n- client_secret (string): The secret key for authorization.\n    \n\n### Response\n\nThe response returns a JSON Web Token (JWT) in the text/html content type. Below is a JSON schema representing the structure of the JWT token:\n\n``` json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"alg\": {\n      \"type\": \"string\"\n    },\n    \"typ\": {\n      \"type\": \"string\"\n    },\n    \"fresh\": {\n      \"type\": \"boolean\"\n    },\n    \"iat\": {\n      \"type\": \"integer\"\n    },\n    \"jti\": {\n      \"type\": \"string\"\n    },\n    \"typ\": {\n      \"type\": \"string\"\n    },\n    \"sub\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"client_key\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    \"nbf\": {\n      \"type\": \"integer\"\n    },\n    \"csr\": {\n      \"type\": \"string\"\n    },\n    \"exp\": {\n      \"type\": \"integer\"\n    }\n  }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

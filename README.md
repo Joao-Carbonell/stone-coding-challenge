@@ -1,33 +1,33 @@
-# stone-coding--challenge
-API para automação de KPIs e OPIs para a Pedra Pagamentos, permitindo a automatização da Last Mile da operação.
+# stone-coding-challenge
+API for automating KPIs and OPIs for Pedra Pagamentos, enabling the automation of the Last Mile of the operation.
 
-* [stone-coding--challenge](#stone-coding--challenge)
-    * [Escopo](#escopo)
-    * [Objetivo](#objetivo)
-    * [Metodologia](#metodologia)
-    * [Resultado](#resultado)
+* [stone-coding--challenge](#stone-coding-challenge)
+    * [Scope](#Scope)
+    * [Objective](#Objective)
+    * [Methodology](#Methodology)
+    * [Outcome](#Outcome)
 
 
-### Escopo
-Este projeto busca auxiliar o time de controle a acompanhar as métricas de KPIs e OPIs.
+### Scope
+This project aims to help the control team track KPI and OPI metrics.
 
-### Objetivo
-Automatizar o cálculo de indicadores (KPIs) de operação, como, por exemplo, os SLA (Quantidade de atendimentos no prazo 
-/ Quantidade total de atendimentos) e produtividade (Quantidade de atendimentos / dia útil).
+### Objective
+Automate the calculation of operational indicators (KPIs), such as SLA (Number of on-time attendances / Total number of attendances) and productivity (Number of attendances / working day).
 
-### Metodologia
-- Desenvolver uma API que permita: 
-  - Inserção de novos atendimentos
-  - Consulta de atendimentos existentes 
-  - Atualização os atendimentos. 
-- Focar na automatização dos indicadores de operação de Last Mile (Ultima etapa da jornada do e-commerce B2C)
-  - **Produtividade** por Green Angel
-  - **SLA** por base logística
-  - **SLA** por Green Angel
 
-### Resultado
-O Objetivo final é permitir que os analistas dediquem mais tempo tempo na análise de dados estratégicos, pois atualmente 
-esse tempo é desperdiçado com extração e tratamento de dados para que sejam posteriormente apurados.
+### Methodology
+- Develop an API that allows: 
+  - Insertion of new attendances
+  - Querying existing attendances 
+  - Updating attendances 
+- Focus on automating Last Mile operational indicators (final stage of B2C e-commerce journey):
+  - **Productivity** by Green Angel
+  - **SLA** by logistics base
+  - **SLA** by Green Angel
+
+### Outcome
+The ultimate goal is to allow analysts to spend more time on the analysis of strategic data, as currently, this time is wasted on data extraction and processing to later produce reports.
+Flask App with Docker
 
 # Flask App with Docker
 
@@ -36,21 +36,21 @@ This repository contains a project developed with Flask and packaged to run in a
 1. [Project Structure](#ProjectStructure)
 2. [Prerequisites](#Prerequisites)
 3. [How to Run the Project?](#Dev0)
-4. [Atualizando Aplicação Para Versão Atual](#DevAtualizacao)
+4. [Postman collections](#PostmanCollections)
 5. 
-<div id='ProjectStructure'/>
+## <div id='ProjectStructure'/>## Project Structure
 ## Project Structure
 
 
 - *app/*: Contains the main Flask application code.
 - *Dockerfile*: Defines how to build the Docker image for the application.
-- *docker-compose.yml*: Facilitates managing services with Docker Compose.
+- *docker-compose.yml*: Facilitates managing attendances with Docker Compose.
 - *requirements.txt*: Lists the Python dependencies required for the application.
 - *README.md*: Project documentation.
 
 ---
 
-## <div id='ProjectStructure'/>## Prerequisites
+## <div id='Prerequisites'/>## Prerequisites
 
 Make sure you have the following tools installed:
 
@@ -70,12 +70,15 @@ Make sure you have the following tools installed:
    cd kpi-automation-api
    
 
-2.  Start the service:
+2.  Rename the .env.example to .env
+bash
+mv .env.example .env
+3. Start the service:
 bash 
 docker-compose up --build
 
  
-3. Application running on:
+4. Application running on:
 bash
    http://127.0.0.1:8000
 
@@ -83,5 +86,8 @@ bash
 4. DB seed
    No script is need to be run by hand for db seed
 
+## <div id='#PostmanCollections'/> Postman Collections
 
-5. 
+The `kpi-automation-api-postman` folder contains Postman collections and the environment files required for importing into Postman.
+
+Also, a brief explanation of endpoints is available on the postman's documentation.
