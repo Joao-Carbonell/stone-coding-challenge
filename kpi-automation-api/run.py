@@ -1,7 +1,3 @@
-import os
-
-import uvicorn
-from dotenv import load_dotenv
 
 from app import create_app
 from app.config.create_db import create_db

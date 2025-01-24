@@ -7,6 +7,9 @@ WORKDIR /app
 # Coping the requirements.txt
 COPY requirements.txt /app/
 
+# Coping the requirements.txt
+COPY .env /app/.env
+
 # Install dependencies
 RUN pip install -r requirements.txt
 
