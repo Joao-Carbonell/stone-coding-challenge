@@ -27,13 +27,13 @@ def connect_tcp_socket() -> str:
     db_pass = os.environ["DB_PASS"]
     db_name = os.environ["DB_NAME"]
 
-    if os.getenv("FLASK_DEBUG") == "1":
-        host = "127.0.0.1"
-        port = os.environ.get("DB_PORT", "5432")
-        return str(os.environ.get('SQLALCHEMY_DATABASE_URI'))
-    else:
-
-        project_id = os.environ["GCP_PROJECT_ID"]
-        instance_connection_name = os.environ["INSTANCE_HOST"]
-        return f"postgresql+pg8000://{db_user}:{db_pass}@/{db_name}?host=/cloudsql/{project_id}:{instance_connection_name}"
+    # if os.getenv("FLASK_DEBUG") == "1":
+    #     host = "127.0.0.1"
+    #     port = os.environ.get("DB_PORT", "5432")
+    return str(os.environ.get('SQLALCHEMY_DATABASE_URI'))
+    # else:
+    #
+    #     project_id = os.environ["GCP_PROJECT_ID"]
+    #     instance_connection_name = os.environ["INSTANCE_HOST"]
+    #     return f"postgresql+psycopg2://{db_user}:{db_pass}@/{db_name}?host=/cloudsql/{project_id}:{instance_connection_name}"
 

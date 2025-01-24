@@ -1,0 +1,22 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - echo "$IMAGE_TAG"
+      - echo "$IMAGE"
+      - echo "$REPOSITORY"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY
+  build:
+    commands:
+      - echo Building the Docker image with Docker Compose...
+      - docker-compose build
+  post_build:
+    commands:
+      - echo Tagging the Docker image...
+      - docker tag $IMAGE:$IMAGE_TAG $REPOSITORY/$IMAGE:$IMAGE_TAG
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker-compose push
+artifacts:
+  files:
+    - "**/*"
