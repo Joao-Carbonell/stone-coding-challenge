@@ -1,20 +1,21 @@
-# stone-coding-challenge
+# <div id='#stone-coding-challenge'/>stone-coding-challenge
 API for automating KPIs and OPIs for Pedra Pagamentos, enabling the automation of the Last Mile of the operation.
 
-* [stone-coding--challenge](#stone-coding-challenge)
+* [stone-coding-challenge](#stone-coding-challenge)
     * [Scope](#Scope)
     * [Objective](#Objective)
     * [Methodology](#Methodology)
     * [Outcome](#Outcome)
 
-
+## <div id='#Scope'/> Scope
 ### Scope
 This project aims to help the control team track KPI and OPI metrics.
 
+## <div id='#Objective'/> Objective
 ### Objective
 Automate the calculation of operational indicators (KPIs), such as SLA (Number of on-time attendances / Total number of attendances) and productivity (Number of attendances / working day).
 
-
+## <div id='#Methodology'/> Methodology
 ### Methodology
 - Develop an API that allows: 
   - Insertion of new attendances
@@ -24,21 +25,24 @@ Automate the calculation of operational indicators (KPIs), such as SLA (Number o
   - **Productivity** by Green Angel
   - **SLA** by logistics base
   - **SLA** by Green Angel
-
+  - 
+## <div id='#Outcome'/> Outcome
 ### Outcome
 The ultimate goal is to allow analysts to spend more time on the analysis of strategic data, as currently, this time is wasted on data extraction and processing to later produce reports.
 Flask App with Docker
 
+## <div id='#ProjectStructure'/> Project Structure
 # Flask App with Docker
 
 This repository contains a project developed with Flask and packaged to run in a Docker environment.
 
 1. [Project Structure](#ProjectStructure)
 2. [Prerequisites](#Prerequisites)
-3. [How to Run the Project?](#Dev0)
+3. [How to Run the Project?](#RunProject)
 4. [Postman collections](#PostmanCollections)
-5. 
-## <div id='ProjectStructure'/>## Project Structure
+
+   
+## <div id='#ProjectStructure'/> Project Structure
 ## Project Structure
 
 
@@ -50,7 +54,7 @@ This repository contains a project developed with Flask and packaged to run in a
 
 ---
 
-## <div id='Prerequisites'/>## Prerequisites
+## <div id='#Prerequisites'/> Prerequisites
 
 Make sure you have the following tools installed:
 
@@ -59,11 +63,11 @@ Make sure you have the following tools installed:
 
 ---
 
-## <div id='#Dev0'/>## How to Run the Project
+## <div id='#RunProject'/> How to Run the Project
 
 1. Clone this repository:
    bash
-   git clone https://https://github.com/Joao-Carbonell/stone-coding-challenge.git
+   git clone https://github.com/Joao-Carbonell/stone-coding-challenge.git
    
    cd stone-coding-challenge
 
