@@ -15,6 +15,23 @@ List of all features developed for this project
     * [Authorization](#authorization)
       * [token](#token)
 
+
+
+| **Feature**       |               Feature               | Status  | Endpoint                            | Observation                                                                                                                         |
+|-------------------|:-----------------------------------:|:-------:|-------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| **Attendance**    |                                     |         |                                     |                                                                                                                                     |
+|                   |          Create attendance          |   ✔️    | create-attendanc                    |                                                                                                                                     |
+|                   |          Update attendance          |   ✔️    | update-attendance                   | id_attendance must be unique. <br/>It is necessary to add an unique restriction to column.                                          |
+|                   |           Get attendance            |   ✔️    | get-attendance                      |                                                                                                                                     |
+|                   |         Get all attendances         |   ✔️    | get-all-attendances                 | It is necessary refactor the query to avoid slow time requests.<br/> This endpoint accepts parameters to be used on filter and sort |
+| **Productivity**  |                                     |         |                                     |                                                                                                                                     |
+|                   |          Get productivity           |   ✔️    | get-productivity                    |                                                                                                                                     |
+|                   |     Get productivity with angel     |   ✔️    | get-productivity-with-angel         |                                                                                                                                     |
+|                   |      Get productivity by angel      |   ✔️    | get-productivity-by-angel           |                                                                                                                                     |
+|                   | Get productivity by pole and period |   ✔️    | get-productivity-by-pole-and-period |                                                                                                                                     |
+| **Authorization** |                                     |         |                                     |                                                                                                                                     |
+|                   |            Obtain token             |   ✔️    |                                     |                                                                                                                                     |
+
 # <div id='#features-developed'/> Features developed
 
 ### All endpoints are under authorization
@@ -96,9 +113,9 @@ When a new attendance is created, the API returns a JSON response containing det
 ###   get-attendance<div id='#get-attendance'/>
 #### This endpoint is used to get attendance records.
 #### Param
-#####  `id: (integer): The ID of the attendance's register on this service database`
+##### The id is sent through the route
 #### Response
-A json response containing a attendance record
+A json response containing an attendance record
 ######
     {
         "attendance": {
@@ -113,4 +130,30 @@ A json response containing a attendance record
         "message": "ATTENDANCE_FOUND"
     }
 
-### 
+###   get-all-attendances<div id='#get-all-attendances'/>
+#### This endpoint makes an HTTP GET request to retrieve the list of attendances. The response of this request is documented as a JSON schema below:
+#### Param
+#####  `{{filter_field}} : {{field_value}} (string : String ): The name and value for the a field to be filtered. For instance: deadline :  24/12/1988. Can be sended more than one parameter`
+#####  `sort (string): (string): Field to be sorted`
+
+
+###### 
+    {
+        "deadline": 20/05/2021,
+        "sort": attendance_date,
+        "angel": "Bruna Bandoli Ferreira",
+    }
+
+A json response containing an attendances collection
+######
+    [
+        {
+            "angel": "Gabriel Pereira Bandoli",
+            "attendance_date": "Tue, 29 Jun 2021 12:57:19 GMT",
+            "deadline": "Wed, 20 May 2021 00:00:00 GMT",
+            "id": 1213,
+            "id_attendance": 1868,
+            "id_client": 528921976,
+            "pole": "BA - FEIRA DE SANTANA"
+        },
+    ]
