@@ -86,18 +86,21 @@ def retrieve_attendance(id):
     """
     return AttendanceController.retrieve_attendance(id)
 
-@attendance_blueprint.route('/', methods=['GET'])
+@attendance_blueprint.route('/get_attendances', methods=['GET'])
 @jwt_required()
 def get_attendances():
     """
-    Retrieves a list of all attendances.
+    Retrieves all attendance records by calling the AttendanceController's method. The
+    request must be authorized using a JSON Web Token (JWT).
 
-    This endpoint handles GET requests to fetch all attendance records. It
-    communicates with the AttendanceController to retrieve the data and
-    returns the result back to the requester.
+    Parameters:
+        None
 
-    :returns: JSON representation of all attendance records.
-    :rtype: flask.Response
+    Returns:
+        Response: The formatted response provided by the AttendanceController.get_all_attendances method.
+
+    Raises:
+        None
     """
     return AttendanceController.get_all_attendances(request)
 
